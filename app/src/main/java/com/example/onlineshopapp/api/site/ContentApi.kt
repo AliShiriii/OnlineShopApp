@@ -8,10 +8,10 @@ import retrofit2.http.Path
 
 interface ContentApi {
 
-    @GET("/api/blog")
+    @GET("/api/content")
     suspend fun getContent(): ServiceResponse<Content>
 
-    @GET("/api/blog/{id}")
-    suspend fun getContentById(@Path("id") id: Long): ServiceResponse<Content>
+    @GET("/api/content/{title}")
+    suspend fun getContentByTitle(@Path("title") id: String): ServiceResponse<Content>
 
 }
