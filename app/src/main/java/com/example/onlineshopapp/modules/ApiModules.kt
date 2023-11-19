@@ -1,4 +1,4 @@
-package com.example.onlineshopapp.Modules
+package com.example.onlineshopapp.modules
 
 import com.example.onlineshopapp.config.UnsafeSSLConfig
 import dagger.Module
