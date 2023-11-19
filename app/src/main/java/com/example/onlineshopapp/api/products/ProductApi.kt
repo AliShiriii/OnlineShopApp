@@ -13,4 +13,10 @@ interface ProductApi {
     @GET("/api/product/{id}")
     suspend fun getProductById(@Path("id") id: Long): ServiceResponse<Product>
 
+    @GET("/api/product/new")
+    suspend fun getNewProduct(): ServiceResponse<Product>
+
+    @GET("/api/product/popular")
+    suspend fun getPopularProduct(): ServiceResponse<Product>
+
 }
