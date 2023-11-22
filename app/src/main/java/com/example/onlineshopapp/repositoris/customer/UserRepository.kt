@@ -4,7 +4,6 @@ import com.example.onlineshopapp.api.customer.UserApi
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.customer.User
 import com.example.onlineshopapp.models.customer.UserVM
-import com.example.onlineshopapp.models.invoices.Invoice
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 

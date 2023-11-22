@@ -2,7 +2,6 @@ package com.example.onlineshopapp.api.invoices
 
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.invoices.Invoice
-import com.example.onlineshopapp.models.products.ProductColor
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

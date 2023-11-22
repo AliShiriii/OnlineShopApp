@@ -2,7 +2,6 @@ package com.example.onlineshopapp.api.products
 
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.products.ProductColor
-import com.example.onlineshopapp.models.site.Blog
 import retrofit2.http.GET
 import retrofit2.http.Path
 

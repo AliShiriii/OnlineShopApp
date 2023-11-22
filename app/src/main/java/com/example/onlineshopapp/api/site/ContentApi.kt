@@ -1,7 +1,6 @@
 package com.example.onlineshopapp.api.site
 
 import com.example.onlineshopapp.models.ServiceResponse
-import com.example.onlineshopapp.models.site.Blog
 import com.example.onlineshopapp.models.site.Content
 import retrofit2.http.GET
 import retrofit2.http.Path
