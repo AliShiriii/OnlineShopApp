@@ -8,9 +8,9 @@ import retrofit2.http.Path
 interface ProductCategoryApi {
 
     @GET("/api/productCategory")
-    suspend fun getColor(): ServiceResponse<ProductCategory>
+    suspend fun getCategory(): ServiceResponse<ProductCategory>
 
     @GET("/api/productCategory/{id}")
-    suspend fun getColorById(@Path("id") id: Long): ServiceResponse<ProductCategory>
+    suspend fun getCategoryById(@Path("id") id: Long): ServiceResponse<ProductCategory>
 
 }
