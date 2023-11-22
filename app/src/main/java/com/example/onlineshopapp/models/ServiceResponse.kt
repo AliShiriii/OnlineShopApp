@@ -1,6 +1,6 @@
 package com.example.onlineshopapp.models
 
-class ServiceResponse<T>(
+data class ServiceResponse<T>(
 
     val data: List<T>? = null,
     var message: String? = null,
