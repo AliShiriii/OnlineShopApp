@@ -4,16 +4,17 @@ import com.example.onlineshopapp.api.customer.UserApi
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.customer.User
 import com.example.onlineshopapp.models.customer.UserVM
+import com.example.onlineshopapp.repositoris.base.BaseRepository
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class UserRepository @Inject constructor(private val userApi: UserApi) {
+class UserRepository @Inject constructor(private val userApi: UserApi): BaseRepository() {
 
     suspend fun getUserInfo(token: String): ServiceResponse<User> {
 
         return try {
-            userApi.getUserInfo(token)
+            userApi.getUserInfo(prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }
@@ -25,7 +26,7 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
     ): ServiceResponse<User> {
 
         return try {
-            userApi.getBlogById(user, token)
+            userApi.changePassword(user, prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }
@@ -59,7 +60,7 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
     ): ServiceResponse<User> {
 
         return try {
-            userApi.update(user, token)
+            userApi.update(user, prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }

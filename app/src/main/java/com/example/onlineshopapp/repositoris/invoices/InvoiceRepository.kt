@@ -3,17 +3,17 @@ package com.example.onlineshopapp.repositoris.invoices
 import com.example.onlineshopapp.api.invoices.InvoiceApi
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.invoices.Invoice
-import com.example.onlineshopapp.models.products.ProductColor
+import com.example.onlineshopapp.repositoris.base.BaseRepository
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class InvoiceRepository @Inject constructor(private val invoiceApi: InvoiceApi) {
+class InvoiceRepository @Inject constructor(private val invoiceApi: InvoiceApi) : BaseRepository() {
 
     suspend fun addInvoice(invoice: Invoice, token: String): ServiceResponse<Invoice> {
 
         return try {
-            invoiceApi.addInvoice(invoice, token)
+            invoiceApi.addInvoice(invoice, prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }
@@ -22,7 +22,7 @@ class InvoiceRepository @Inject constructor(private val invoiceApi: InvoiceApi) 
     suspend fun getInvoiceById(id: Long, token: String): ServiceResponse<Invoice> {
 
         return try {
-            invoiceApi.getInvoiceById(id, token)
+            invoiceApi.getInvoiceById(id, prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }
@@ -36,11 +36,10 @@ class InvoiceRepository @Inject constructor(private val invoiceApi: InvoiceApi) 
     ): ServiceResponse<Invoice> {
 
         return try {
-            invoiceApi.getInvoiceByUserId(id, pageIndex, pageSize, token)
+            invoiceApi.getInvoiceByUserId(id, pageIndex, pageSize, prepareToken(token))
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }
     }
-
 
 }

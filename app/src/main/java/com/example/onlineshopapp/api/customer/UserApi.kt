@@ -14,7 +14,7 @@ interface UserApi {
     suspend fun getUserInfo(@Header("Authorization") token: String): ServiceResponse<User>
 
     @PUT("/api/user/changePassword/")
-    suspend fun getBlogById(
+    suspend fun changePassword(
         @Body user: UserVM,
         @Header("Authorization") token: String,
     ): ServiceResponse<User>
