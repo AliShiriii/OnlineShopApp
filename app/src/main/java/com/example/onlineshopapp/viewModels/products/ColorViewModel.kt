@@ -1,4 +1,4 @@
-package com.example.onlineshopapp.viewModels.invoices
+package com.example.onlineshopapp.viewModels.products
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
