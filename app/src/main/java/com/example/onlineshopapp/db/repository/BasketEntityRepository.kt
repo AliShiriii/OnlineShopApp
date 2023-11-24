@@ -9,12 +9,16 @@ import com.example.onlineshopapp.db.models.BasketEntity
 class BasketEntityRepository(application: Application) {
 
     private var basketDao: BasketDao
-    private lateinit var basketList: LiveData<List<BasketEntity>>
+    lateinit var basketList: LiveData<List<BasketEntity>>
 
     init {
         val database = OnlineShopDataBase.getInstance(application)
         basketDao = database.basketDao()
         basketList = basketDao.getAll()
+    }
+
+    fun getAllBasket(): LiveData<List<BasketEntity>> {
+        return basketList
     }
 
     suspend fun insert(basketEntity: BasketEntity) {

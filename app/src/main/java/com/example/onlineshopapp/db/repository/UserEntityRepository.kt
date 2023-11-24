@@ -9,12 +9,16 @@ import com.example.onlineshopapp.db.models.UserEntity
 class UserEntityRepository(application: Application) {
 
     private var userDao: UserDao
-    private lateinit var currentUser: LiveData<UserEntity>
+    lateinit var currentUser: LiveData<UserEntity>
 
     init {
         val database = OnlineShopDataBase.getInstance(application)
         userDao = database.userDao()
         currentUser = userDao.get()
+    }
+
+    fun getCurrentUser(): LiveData<UserEntity> {
+        return currentUser
     }
 
     suspend fun insert(userEntity: UserEntity) {
