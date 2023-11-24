@@ -2,14 +2,9 @@ package com.example.onlineshopapp.db.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
 import com.example.onlineshopapp.db.OnlineShopDataBase
 import com.example.onlineshopapp.db.dao.UserDao
 import com.example.onlineshopapp.db.models.UserEntity
-import javax.inject.Inject
 
 class UserEntityRepository(application: Application) {
 
