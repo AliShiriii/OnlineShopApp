@@ -8,7 +8,7 @@ import com.example.onlineshopapp.db.models.UserEntity
 interface UserDao {
 
     @Insert
-    fun add(userEntity: UserEntity)
+    fun insert(userEntity: UserEntity)
 
     @Update
     fun update(userEntity: UserEntity)

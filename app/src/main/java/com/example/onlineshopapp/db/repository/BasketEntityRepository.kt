@@ -1,6 +1,36 @@
 package com.example.onlineshopapp.db.repository
 
-import javax.inject.Inject
+import android.app.Application
+import androidx.lifecycle.LiveData
+import com.example.onlineshopapp.db.OnlineShopDataBase
+import com.example.onlineshopapp.db.dao.BasketDao
+import com.example.onlineshopapp.db.models.BasketEntity
 
-class BasketEntityRepository @Inject constructor() {
+class BasketEntityRepository(application: Application) {
+
+    private var basketDao: BasketDao
+    private lateinit var basketList: LiveData<List<BasketEntity>>
+
+    init {
+        val database = OnlineShopDataBase.getInstance(application)
+        basketDao = database.basketDao()
+        basketList = basketDao.getAll()
+    }
+
+    suspend fun insert(basketEntity: BasketEntity) {
+        deleteAll()
+        basketDao.insert(basketEntity)
+    }
+
+    suspend fun update(basketEntity: BasketEntity) {
+        basketDao.update(basketEntity)
+    }
+
+    suspend fun delete(basketEntity: BasketEntity) {
+        basketDao.delete(basketEntity)
+    }
+
+    suspend fun deleteAll() {
+        return basketDao.deleteAll()
+    }
 }

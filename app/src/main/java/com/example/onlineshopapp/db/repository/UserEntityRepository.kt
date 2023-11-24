@@ -17,9 +17,9 @@ class UserEntityRepository(application: Application) {
         currentUser = userDao.get()
     }
 
-    suspend fun add(userEntity: UserEntity) {
+    suspend fun insert(userEntity: UserEntity) {
         deleteAll()
-        userDao.add(userEntity)
+        userDao.insert(userEntity)
     }
 
     suspend fun update(userEntity: UserEntity) {
