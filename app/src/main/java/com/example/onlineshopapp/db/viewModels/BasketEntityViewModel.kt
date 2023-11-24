@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.onlineshopapp.db.models.BasketEntity
-import com.example.onlineshopapp.db.models.UserEntity
 import com.example.onlineshopapp.db.repository.BasketEntityRepository
 
 class BasketEntityViewModel(application: Application) : AndroidViewModel(application) {
