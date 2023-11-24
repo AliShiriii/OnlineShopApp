@@ -1,0 +1,41 @@
+package com.example.onlineshopapp.db.repository
+
+import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.example.onlineshopapp.db.OnlineShopDataBase
+import com.example.onlineshopapp.db.dao.UserDao
+import com.example.onlineshopapp.db.models.UserEntity
+import javax.inject.Inject
+
+class UserEntityRepository(application: Application) {
+
+    private var userDao: UserDao
+    private lateinit var currentUser: LiveData<UserEntity>
+
+    init {
+        val database = OnlineShopDataBase.getInstance(application)
+        userDao = database.userDao()
+        currentUser = userDao.get()
+    }
+
+    suspend fun add(userEntity: UserEntity) {
+        deleteAll()
+        userDao.add(userEntity)
+    }
+
+    suspend fun update(userEntity: UserEntity) {
+        userDao.update(userEntity)
+    }
+
+    suspend fun delete(userEntity: UserEntity) {
+        userDao.delete(userEntity)
+    }
+
+    suspend fun deleteAll() {
+        return userDao.deleteAll()
+    }
+}
