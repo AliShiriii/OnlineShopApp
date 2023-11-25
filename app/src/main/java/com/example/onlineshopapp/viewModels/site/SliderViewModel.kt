@@ -18,10 +18,11 @@ class SliderViewModel @Inject constructor(private val sliderRepository: SliderRe
     ViewModel() {
 
     var dataList = mutableStateOf<List<Slider>>(listOf())
+    var isLoading = mutableStateOf(false)
 
     init {
-
         getSliders { response ->
+            isLoading.value = false
             if (response.status == "OK") {
                 dataList.value = response.data!!
             }

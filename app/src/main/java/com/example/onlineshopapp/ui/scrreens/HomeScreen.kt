@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.models.site.Slider
+import com.example.onlineshopapp.ui.components.products.ProductCategoryListView
+import com.example.onlineshopapp.ui.components.products.ProductListView
 import com.example.onlineshopapp.ui.components.slider.SliderItemView
 import com.example.onlineshopapp.ui.components.slider.SliderListView
 import com.example.onlineshopapp.viewModels.site.SliderViewModel
@@ -39,5 +41,9 @@ fun HomeScreen(navController: NavHostController) {
 
     Column(modifier = Modifier.padding(20.dp)) {
         SliderListView()
+        Spacer(modifier = Modifier.padding(20.dp))
+        ProductCategoryListView()
+        Spacer(modifier = Modifier.padding(20.dp))
+        ProductListView()
     }
 }
