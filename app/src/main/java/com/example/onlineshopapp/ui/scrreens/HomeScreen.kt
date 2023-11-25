@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.models.site.Slider
 import com.example.onlineshopapp.ui.components.slider.SliderItemView
+import com.example.onlineshopapp.ui.components.slider.SliderListView
 import com.example.onlineshopapp.viewModels.site.SliderViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,19 +39,5 @@ fun HomeScreen(navController: NavHostController) {
 
     Column(modifier = Modifier.padding(20.dp)) {
         SliderListView()
-    }
-}
-
-@Composable
-fun SliderListView(viewModel: SliderViewModel = hiltViewModel()) {
-
-    var dataList by remember { mutableStateOf(viewModel.dataList) }
-
-    LazyRow {
-        items(dataList.value.size) { index ->
-
-            SliderItemView(dataList.value[index])
-            Spacer(modifier = Modifier.size(10.dp))
-        }
     }
 }
