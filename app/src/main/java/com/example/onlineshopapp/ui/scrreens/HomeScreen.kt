@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.models.site.Slider
+import com.example.onlineshopapp.ui.components.slider.SliderItemView
 import com.example.onlineshopapp.viewModels.site.SliderViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,54 +51,6 @@ fun SliderListView(viewModel: SliderViewModel = hiltViewModel()) {
 
             SliderItemView(dataList.value[index])
             Spacer(modifier = Modifier.size(10.dp))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun SliderItemView(slider: Slider) {
-
-    Card(
-        modifier = Modifier
-            .width(300.dp)
-            .height(200.dp)
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(20.dp),
-                clip = true
-            ),
-        shape = RoundedCornerShape(20.dp),
-        onClick = {}
-    ) {
-
-        Box(modifier = Modifier) {
-
-            GlideImage(
-                imageModel = slider.image!!,
-                loading = {
-                    CircularProgressIndicator()
-
-                },
-                failure = {
-                    Text(text = "image request failed.")
-                })
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Column {
-                    Text(
-                        text = slider.title!!,
-                        color = Color.White,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(text = slider.subTitle!!, color = Color.LightGray, fontSize = 20.sp)
-                }
-            }
         }
     }
 }
