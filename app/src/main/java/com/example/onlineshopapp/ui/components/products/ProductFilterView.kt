@@ -14,9 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.onlineshopapp.models.products.Product
+import com.example.onlineshopapp.viewModels.products.ProductViewModel
 
 @Composable
-fun ProductFilterView() {
+fun ProductFilterView(viewModel: ProductViewModel = hiltViewModel()) {
 
     val filters = listOf("All", "New", "Popular")
     var selectedFilter by remember { mutableStateOf(0) }
@@ -24,7 +27,21 @@ fun ProductFilterView() {
     LazyRow {
         items(filters.size) { index ->
             TextButton(
-                onClick = { selectedFilter = index },
+                onClick = {
+                    selectedFilter = index
+                    when (selectedFilter) {
+
+                        0 -> {
+                            viewModel.getProducts(0, 6) {}
+                        }
+                        1 -> {
+                            viewModel.getNewProduct {}
+                        }
+                        2 -> {
+                            viewModel.getPopularProduct {}
+                        }
+                    }
+                },
 
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = if (selectedFilter == index) Color.LightGray else Color.Transparent

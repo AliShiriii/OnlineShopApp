@@ -16,7 +16,7 @@ fun SliderListView(viewModel: SliderViewModel = hiltViewModel()) {
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
 
     if (isLoading.value) {
-        Loading(300.dp, 2)
+        Loading(modifier = Modifier.width(300.dp).height(200.dp), 2)
     } else {
         LazyRow {
             items(dataList.value.size) { index ->

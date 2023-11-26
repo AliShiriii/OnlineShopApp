@@ -1,10 +1,12 @@
 package com.example.onlineshopapp.viewModels.products
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.products.Product
 import com.example.onlineshopapp.models.products.ProductColor
+import com.example.onlineshopapp.models.site.Slider
 import com.example.onlineshopapp.repositoris.products.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,9 +16,23 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(private val productRepository: ProductRepository) :
     ViewModel() {
 
-    fun getProduct(onResponse: (ServiceResponse<Product>) -> Unit) {
+    var dataList = mutableStateOf<List<Product>>(listOf())
+    var isLoading = mutableStateOf(false)
+
+    init {
+        getProducts(
+            0, 6
+        ) { response ->
+            isLoading.value = false
+            if (response.status == "OK") {
+                dataList.value = response.data!!
+            }
+        }
+    }
+
+    fun getProducts(pageIndex: Int, pageSize: Int, onResponse: (ServiceResponse<Product>) -> Unit) {
         viewModelScope.launch {
-            var response = productRepository.getProduct()
+            var response = productRepository.getProduct(pageIndex, pageSize)
             onResponse(response)
         }
     }
@@ -24,6 +40,9 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
     fun getProductById(id: Long, onResponse: (ServiceResponse<Product>) -> Unit) {
         viewModelScope.launch {
             var response = productRepository.getProductById(id)
+            if (response.status == "OK") {
+                dataList.value = response.data!!
+            }
             onResponse(response)
         }
     }
@@ -31,6 +50,9 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
     fun getNewProduct(onResponse: (ServiceResponse<Product>) -> Unit) {
         viewModelScope.launch {
             var response = productRepository.getNewProduct()
+            if (response.status == "OK") {
+                dataList.value = response.data!!
+            }
             onResponse(response)
         }
     }

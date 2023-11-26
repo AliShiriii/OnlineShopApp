@@ -4,11 +4,12 @@ import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.products.Product
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ProductApi {
 
     @GET("/api/product")
-    suspend fun getProduct(): ServiceResponse<Product>
+    suspend fun getProduct(@Query("pageIndex") pageIndex: Int, @Query("pageSize") pageSize: Int): ServiceResponse<Product>
 
     @GET("/api/product/{id}")
     suspend fun getProductById(@Path("id") id: Long): ServiceResponse<Product>

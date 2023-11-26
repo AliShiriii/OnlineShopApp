@@ -1,7 +1,9 @@
 package com.example.onlineshopapp.ui.components.products
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,7 +19,9 @@ fun ProductCategoryListView(viewModel: ProductCategoryViewModel = hiltViewModel(
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
 
     if (isLoading.value) {
-        Loading(160.dp, 3)
+        Loading(modifier = Modifier
+            .width(160.dp)
+            .height(200.dp), 3)
     } else {
         LazyRow {
             items(dataList.value.size) { index ->

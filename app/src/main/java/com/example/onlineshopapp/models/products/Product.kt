@@ -9,6 +9,6 @@ data class Product(
     val image: String?,
     val price: Long?,
     val sizes: List<ProductSize>?,
-    val title: String,
-    val visitCount: Int
+    val title: String?,
+    val visitCount: Int?
 )

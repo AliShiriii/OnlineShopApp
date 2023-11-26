@@ -10,11 +10,10 @@ import javax.inject.Inject
 @ActivityScoped
 class ProductRepository @Inject constructor(private val productApi: ProductApi) {
 
-
-    suspend fun getProduct(): ServiceResponse<Product> {
+    suspend fun getProduct(pageIndex: Int, pageSize: Int): ServiceResponse<Product> {
 
         return try {
-            productApi.getProduct()
+            productApi.getProduct(pageIndex, pageSize)
         } catch (e: Exception) {
             ServiceResponse(status = "EXCEPTION", message = e.message)
         }

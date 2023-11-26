@@ -1,36 +1,28 @@
 package com.example.onlineshopapp.ui.scrreens
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.onlineshopapp.models.site.Slider
+import com.example.onlineshopapp.ui.components.Loading
 import com.example.onlineshopapp.ui.components.products.ProductCategoryListView
-import com.example.onlineshopapp.ui.components.products.ProductListView
-import com.example.onlineshopapp.ui.components.slider.SliderItemView
+import com.example.onlineshopapp.ui.components.products.ProductFilterView
+import com.example.onlineshopapp.ui.components.products.ProductListItemView
 import com.example.onlineshopapp.ui.components.slider.SliderListView
-import com.example.onlineshopapp.viewModels.site.SliderViewModel
-import com.skydoves.landscapist.glide.GlideImage
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.onlineshopapp.viewModels.products.ProductViewModel
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    viewModel: ProductViewModel = hiltViewModel(),
+) {
+
+
+    var dataList by remember { mutableStateOf(viewModel.dataList) }
+    var isLoading by remember { mutableStateOf(viewModel.isLoading) }
 
     /*
     * 1) Slider
@@ -39,11 +31,36 @@ fun HomeScreen(navController: NavHostController) {
     * 4) Products, (New, Popular)
     */
 
-    Column(modifier = Modifier.padding(20.dp)) {
-        SliderListView()
-        Spacer(modifier = Modifier.padding(20.dp))
-        ProductCategoryListView()
-        Spacer(modifier = Modifier.padding(20.dp))
-        ProductListView()
+    LazyColumn(modifier = Modifier.padding(20.dp, 0.dp)) {
+        item {
+            SliderListView()
+            Spacer(modifier = Modifier.padding(20.dp))
+        }
+        item {
+
+            ProductCategoryListView()
+            Spacer(modifier = Modifier.padding(20.dp))
+
+        }
+
+        item {
+            ProductFilterView()
+            Spacer(modifier = Modifier.padding(20.dp))
+        }
+
+        if (isLoading.value) {
+            item {
+                Loading(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(160.dp)
+                )
+            }
+        } else
+
+            items(dataList.value.size) { index ->
+                ProductListItemView(dataList.value[index])
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
     }
 }
