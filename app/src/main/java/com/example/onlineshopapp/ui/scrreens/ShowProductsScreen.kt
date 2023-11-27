@@ -1,16 +1,18 @@
 package com.example.onlineshopapp.ui.scrreens
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -22,10 +24,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.ui.components.Loading
 import com.example.onlineshopapp.viewModels.products.ProductViewModel
-import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
+import java.util.*
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ShowProductsScreen(
     productId: Long,
@@ -35,6 +36,8 @@ fun ShowProductsScreen(
 
     var data by remember { mutableStateOf(viewModel.data) }
     var isLoading by remember { mutableStateOf(true) }
+    var selectedSize by remember { mutableStateOf(0) }
+    var selectedColors by remember { mutableStateOf(0) }
     val context = LocalContext.current
     viewModel.getProductById(productId) { response ->
         isLoading = false
@@ -90,10 +93,7 @@ fun ShowProductsScreen(
                             )
                         )
                     )
-            ) {
-
-
-            }
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -104,7 +104,7 @@ fun ShowProductsScreen(
 
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = ""
+                        contentDescription = "", tint = Color.White
                     )
                 }
             }
@@ -122,11 +122,98 @@ fun ShowProductsScreen(
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.padding(10.dp))
                     Text(
                         text = "${data.value?.price!!}T",
                         color = Color.LightGray,
                         fontSize = 26.sp
                     )
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Text(
+                        text = "Sizes",
+                        color = Color.LightGray,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.padding(15.dp))
+
+                    LazyRow {
+                        items(data.value?.sizes!!.size) { index ->
+
+                            TextButton(
+                                onClick = { selectedSize = index },
+                                shape = RoundedCornerShape(15.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor =
+                                    if (selectedSize == index) Color.White else Color.Transparent
+                                ),
+                                modifier = Modifier.size(40.dp)
+                            ) {
+
+                                Text(
+                                    text = data.value?.sizes!![index].title!!,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (selectedSize == index) Color.White else Color.Black
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(5.dp))
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.padding(15.dp))
+                    Text(
+                        text = "Colors",
+                        color = Color.LightGray,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    LazyRow {
+                        items(data.value?.colors!!.size) { index ->
+
+                            TextButton(
+                                onClick = { selectedColors = index },
+                                shape = RoundedCornerShape(15.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor =
+                                    Color(android.graphics.Color.parseColor("#${data.value?.colors!![index].hexValue}"))
+                                ),
+                                modifier = Modifier.size(40.dp),
+                                border = BorderStroke(1.dp, Color.White)
+                            ) {
+                                if (selectedColors == index) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check, contentDescription = "",
+                                        tint = if (data.value?.colors!![index].hexValue?.lowercase(
+                                                Locale.ROOT
+                                            )
+                                            == "fffffff"
+                                        ) Color.Black else Color.White
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(5.dp))
+                        }
+                    }
+                    Spacer(modifier = Modifier.padding(40.dp))
+
+                    Button(
+                        onClick = { /*TODO*/ }, shape = RoundedCornerShape(15.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.White
+                        ),
+                    ) {
+                        Text(text = "Buy Now", fontWeight = FontWeight.Bold)
+                    }
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
                 }
             }
         }
