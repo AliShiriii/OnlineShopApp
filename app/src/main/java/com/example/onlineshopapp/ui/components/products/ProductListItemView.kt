@@ -15,16 +15,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.onlineshopapp.models.products.Product
+import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProductListItemView(product: Product) {
+fun ProductListItemView(product: Product, navController: NavController) {
 
     Card(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .height(200.dp)
             .shadow(
                 elevation = 8.dp,
@@ -32,7 +34,10 @@ fun ProductListItemView(product: Product) {
                 clip = true
             ),
         shape = RoundedCornerShape(20.dp),
-        onClick = {}
+        onClick = {
+
+            navController.navigate("showProduct${product.id}")
+        }
     ) {
 
         Box(modifier = Modifier) {

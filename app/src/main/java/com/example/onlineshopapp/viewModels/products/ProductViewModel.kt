@@ -18,6 +18,7 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
 
     var dataList = mutableStateOf<List<Product>>(listOf())
     var isLoading = mutableStateOf(false)
+    val data = mutableStateOf<Product?>(null)
 
     init {
         getProducts(
@@ -40,9 +41,6 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
     fun getProductById(id: Long, onResponse: (ServiceResponse<Product>) -> Unit) {
         viewModelScope.launch {
             var response = productRepository.getProductById(id)
-            if (response.status == "OK") {
-                dataList.value = response.data!!
-            }
             onResponse(response)
         }
     }

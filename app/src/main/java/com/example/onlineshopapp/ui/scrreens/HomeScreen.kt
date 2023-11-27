@@ -59,7 +59,7 @@ fun HomeScreen(
         } else
 
             items(dataList.value.size) { index ->
-                ProductListItemView(dataList.value[index])
+                ProductListItemView(dataList.value[index], navController)
                 Spacer(modifier = Modifier.padding(10.dp))
             }
     }
