@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.onlineshopapp.ui.components.Loading
+import com.example.onlineshopapp.ui.components.LoadingInRow
 import com.example.onlineshopapp.viewModels.site.SliderViewModel
 
 @Composable
@@ -16,7 +16,7 @@ fun SliderListView(viewModel: SliderViewModel = hiltViewModel()) {
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
 
     if (isLoading.value) {
-        Loading(modifier = Modifier.width(300.dp).height(200.dp), 2)
+        LoadingInRow(modifier = Modifier.width(300.dp).height(200.dp), 2)
     } else {
         LazyRow {
             items(dataList.value.size) { index ->

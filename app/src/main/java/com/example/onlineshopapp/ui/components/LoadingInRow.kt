@@ -1,6 +1,5 @@
 package com.example.onlineshopapp.ui.components
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,11 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Loading(modifier: Modifier, count: Int = 1) {
+fun LoadingInRow(modifier: Modifier, count: Int = 1) {
 
     LazyRow {
         items(count) {

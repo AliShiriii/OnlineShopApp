@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.onlineshopapp.ui.components.Loading
+import com.example.onlineshopapp.ui.components.LoadingInColumn
+import com.example.onlineshopapp.ui.components.LoadingInRow
 import com.example.onlineshopapp.viewModels.products.ProductViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import java.util.*
@@ -51,7 +52,7 @@ fun ShowProductsScreen(
     }
 
     if (isLoading) {
-        Loading(modifier = Modifier.fillMaxSize())
+        LoadingInColumn(modifier = Modifier.fillMaxSize())
     } else {
 
         Card(

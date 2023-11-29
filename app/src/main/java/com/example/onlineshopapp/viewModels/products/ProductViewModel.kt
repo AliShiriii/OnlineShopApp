@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.products.Product
-import com.example.onlineshopapp.models.products.ProductColor
-import com.example.onlineshopapp.models.site.Slider
 import com.example.onlineshopapp.repositoris.products.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,18 +26,6 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
             if (response.status == "OK") {
                 dataList.value = response.data!!
             }
-        }
-    }
-
-    fun getProductByCategoryId(
-        categoryId: Long,
-        pageIndex: Int,
-        pageSize: Int,
-        onResponse: (ServiceResponse<Product>) -> Unit,
-    ) {
-        viewModelScope.launch {
-            var response = productRepository.getProductByCategoryId(categoryId, pageIndex, pageSize)
-            onResponse(response)
         }
     }
 

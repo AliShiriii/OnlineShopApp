@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.onlineshopapp.ui.components.TopAppView
+import com.example.onlineshopapp.utils.ThisApp
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -39,7 +40,8 @@ fun MainScreen() {
                 fullScreen = false
                 val id = backStack.arguments?.getLong("categoryId")
                 val title = backStack.arguments?.getString("title")
-                ProductsScreen(id!!, title!!, navController)
+                ThisApp.productCategoryId = id!!
+                ProductsScreen(id, title!!, navController)
             }
             composable(
                 "showProduct/{product}",
