@@ -1,4 +1,4 @@
-package com.example.onlineshopapp.ui.scrreens
+package com.example.onlineshopapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,7 +38,7 @@ fun HomeScreen(
         }
         item {
 
-            ProductCategoryListView()
+            ProductCategoryListView(navController)
             Spacer(modifier = Modifier.padding(20.dp))
 
         }

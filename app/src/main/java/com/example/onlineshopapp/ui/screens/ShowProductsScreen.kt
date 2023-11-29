@@ -1,4 +1,4 @@
-package com.example.onlineshopapp.ui.scrreens
+package com.example.onlineshopapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke

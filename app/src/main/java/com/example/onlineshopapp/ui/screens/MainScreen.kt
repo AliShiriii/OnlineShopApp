@@ -1,4 +1,4 @@
-package com.example.onlineshopapp.ui.scrreens
+package com.example.onlineshopapp.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.material.*
@@ -8,9 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.onlineshopapp.models.products.Product
 import com.example.onlineshopapp.ui.components.TopAppView
-import com.google.gson.Gson
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -32,7 +30,17 @@ fun MainScreen() {
                 fullScreen = false
                 HomeScreen(navController)
             }
-
+            composable("products/{categoryId}/{title}",
+                arguments = listOf(
+                    navArgument("categoryId") { type = NavType.LongType },
+                    navArgument("title") { type = NavType.StringType }
+                )
+            ) { backStack ->
+                fullScreen = false
+                val id = backStack.arguments?.getLong("categoryId")
+                val title = backStack.arguments?.getString("title")
+                ProductsScreen(id!!, title!!, navController)
+            }
             composable(
                 "showProduct/{product}",
                 arguments = listOf(navArgument("product") { type = NavType.LongType })

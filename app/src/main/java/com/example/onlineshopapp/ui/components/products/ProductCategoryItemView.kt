@@ -13,12 +13,13 @@ import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.onlineshopapp.models.products.ProductCategory
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProductCategoryItemView(productCategory: ProductCategory) {
+fun ProductCategoryItemView(productCategory: ProductCategory, navController: NavController) {
 
     Card(
         modifier = Modifier
@@ -30,7 +31,11 @@ fun ProductCategoryItemView(productCategory: ProductCategory) {
                 clip = true
             ),
         shape = RoundedCornerShape(20.dp),
-        onClick = {}
+        onClick = {
+
+            navController.navigate("products/${productCategory.id}/${productCategory.title}")
+
+        }
     ) {
 
         Box(modifier = Modifier) {

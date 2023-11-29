@@ -9,7 +9,17 @@ import retrofit2.http.Query
 interface ProductApi {
 
     @GET("/api/product")
-    suspend fun getProduct(@Query("pageIndex") pageIndex: Int, @Query("pageSize") pageSize: Int): ServiceResponse<Product>
+    suspend fun getProduct(
+        @Query("pageIndex") pageIndex: Int,
+        @Query("pageSize") pageSize: Int,
+    ): ServiceResponse<Product>
+
+    @GET("/api/product/cat/{id}")
+    suspend fun getProductByCategoryId(
+        @Path("id") id: Long,
+        @Query("pageIndex") pageIndex: Int,
+        @Query("pageSize") pageSize: Int,
+    ): ServiceResponse<Product>
 
     @GET("/api/product/{id}")
     suspend fun getProductById(@Path("id") id: Long): ServiceResponse<Product>

@@ -19,6 +19,19 @@ class ProductRepository @Inject constructor(private val productApi: ProductApi) 
         }
     }
 
+    suspend fun getProductByCategoryId(
+        categoryId: Long,
+        pageIndex: Int,
+        pageSize: Int,
+    ): ServiceResponse<Product> {
+
+        return try {
+            productApi.getProductByCategoryId(categoryId, pageIndex, pageSize)
+        } catch (e: Exception) {
+            ServiceResponse(status = "EXCEPTION", message = e.message)
+        }
+    }
+
     suspend fun getProductById(id: Long): ServiceResponse<Product> {
 
         return try {

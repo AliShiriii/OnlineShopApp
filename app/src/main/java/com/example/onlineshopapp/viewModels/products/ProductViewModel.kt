@@ -31,6 +31,18 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
         }
     }
 
+    fun getProductByCategoryId(
+        categoryId: Long,
+        pageIndex: Int,
+        pageSize: Int,
+        onResponse: (ServiceResponse<Product>) -> Unit,
+    ) {
+        viewModelScope.launch {
+            var response = productRepository.getProductByCategoryId(categoryId, pageIndex, pageSize)
+            onResponse(response)
+        }
+    }
+
     fun getProducts(pageIndex: Int, pageSize: Int, onResponse: (ServiceResponse<Product>) -> Unit) {
         viewModelScope.launch {
             var response = productRepository.getProduct(pageIndex, pageSize)
