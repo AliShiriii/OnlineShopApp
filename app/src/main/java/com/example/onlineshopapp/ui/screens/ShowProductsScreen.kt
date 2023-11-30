@@ -21,17 +21,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
+import com.example.onlineshopapp.db.models.BasketEntity
+import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
 import com.example.onlineshopapp.ui.components.LoadingInColumn
 import com.example.onlineshopapp.ui.components.LoadingInRow
 import com.example.onlineshopapp.viewModels.products.ProductViewModel
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
 fun ShowProductsScreen(
     productId: Long,
     navController: NavHostController,
+    basketVieModel: BasketEntityViewModel,
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
 
@@ -202,7 +209,20 @@ fun ShowProductsScreen(
                     Spacer(modifier = Modifier.padding(40.dp))
 
                     Button(
-                        onClick = { /*TODO*/ }, shape = RoundedCornerShape(15.dp),
+                        onClick = {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val basket = BasketEntity(
+                                    productId = productId,
+                                    quantity = 1,
+                                    sizeId = data.value!!.sizes!![selectedSize].id!!,
+                                    colorId = data.value!!.colors!![selectedColors].id!!,
+                                )
+                                basketVieModel.addTooBasket(basket)
+                            }
+                            Toast.makeText(context, "Product added to your basket!", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                        },
+                        shape = RoundedCornerShape(15.dp),
                         modifier = Modifier
                             .fillMaxSize()
                             .height(50.dp),

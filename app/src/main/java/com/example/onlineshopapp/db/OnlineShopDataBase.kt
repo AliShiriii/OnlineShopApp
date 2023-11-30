@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.onlineshopapp.db.dao.BasketDao
 import com.example.onlineshopapp.db.dao.UserDao
+import com.example.onlineshopapp.db.models.BasketEntity
 import com.example.onlineshopapp.db.models.UserEntity
 
-@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
+@Database(entities = [UserEntity::class, BasketEntity::class], version = 2, exportSchema = false)
 abstract class OnlineShopDataBase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

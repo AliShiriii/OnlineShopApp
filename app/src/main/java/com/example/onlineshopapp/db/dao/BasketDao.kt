@@ -17,7 +17,7 @@ interface BasketDao {
     fun delete(basketEntity: BasketEntity)
 
     @Query("select * from Basketentity")
-    fun getAll(): LiveData<List<BasketEntity>>
+    fun getAll(): List<BasketEntity>
 
     @Query("select * from BasketEntity")
     fun deleteAll()

@@ -3,17 +3,20 @@ package com.example.onlineshopapp.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.onlineshopapp.MainActivity
+import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
 import com.example.onlineshopapp.ui.components.TopAppView
 import com.example.onlineshopapp.utils.ThisApp
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(mainActivity: MainActivity) {
 
     val navController = rememberNavController()
     var fullScreen by remember { mutableStateOf(false) }
@@ -49,7 +52,9 @@ fun MainScreen() {
             ) { backStack ->
                 fullScreen = true
                 backStack.arguments?.getLong("product").let {
-                    ShowProductsScreen(it!!, navController)
+                    val basketViewModel =
+                        ViewModelProvider(mainActivity)[BasketEntityViewModel::class.java]
+                    ShowProductsScreen(it!!, navController, basketViewModel)
                 }
             }
         }

@@ -9,15 +9,38 @@ import com.example.onlineshopapp.db.repository.BasketEntityRepository
 class BasketEntityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository = BasketEntityRepository(application)
-    private var currentUser = repository.getAllBasket()
 
-    suspend fun insert(basketEntity: BasketEntity) {
+    private suspend fun insert(basketEntity: BasketEntity) {
         repository.insert(basketEntity)
     }
 
-    suspend fun update(basketEntity: BasketEntity) {
+    private suspend fun update(basketEntity: BasketEntity) {
         if (basketEntity.id <= 0) return
         repository.update(basketEntity)
+    }
+
+    suspend fun addTooBasket(basketEntity: BasketEntity) {
+
+        val allBasketList = repository.getAllBasket()
+
+        if (allBasketList != null && allBasketList.any { x ->
+                x.productId == basketEntity.productId &&
+                        x.colorId == basketEntity.colorId
+                        && x.sizeId == basketEntity.sizeId
+            }) {
+            val oldBasket =
+                allBasketList.first { x ->
+                    x.productId == basketEntity.productId &&
+                            x.colorId == basketEntity.colorId
+                            && x.sizeId == basketEntity.sizeId
+                }
+
+            oldBasket.quantity++
+            update(oldBasket)
+        } else {
+
+
+        }
     }
 
     suspend fun delete(basketEntity: BasketEntity) {
@@ -28,7 +51,7 @@ class BasketEntityViewModel(application: Application) : AndroidViewModel(applica
         return repository.deleteAll()
     }
 
-    fun getAllBasketList(): LiveData<List<BasketEntity>> {
-        return currentUser
+    suspend fun getAllBasketList(): List<BasketEntity> {
+        return repository.getAllBasket()
     }
 }
