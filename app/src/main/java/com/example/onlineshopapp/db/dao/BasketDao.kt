@@ -22,4 +22,7 @@ interface BasketDao {
     @Query("select * from BasketEntity")
     fun deleteAll()
 
+    @Query("select * from Basketentity")
+    fun getAllLive(): LiveData<List<BasketEntity>>
+
 }

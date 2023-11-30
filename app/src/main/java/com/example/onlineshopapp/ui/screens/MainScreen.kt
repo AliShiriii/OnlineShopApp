@@ -20,10 +20,16 @@ fun MainScreen(mainActivity: MainActivity) {
 
     val navController = rememberNavController()
     var fullScreen by remember { mutableStateOf(false) }
+    val basketViewModel =
+        ViewModelProvider(mainActivity)[BasketEntityViewModel::class.java]
+
+    basketViewModel.getAllBasketLive().observe(mainActivity) {
+        basketViewModel.dataList.value = it
+    }
 
     Scaffold(topBar = {
         if (!fullScreen)
-            TopAppView()
+            TopAppView(navController)
     }) {
 
         NavHost(
@@ -33,6 +39,10 @@ fun MainScreen(mainActivity: MainActivity) {
             composable("Home") {
                 fullScreen = false
                 HomeScreen(navController)
+            }
+            composable("Basket") {
+                fullScreen = true
+                BasketListScreen(navController, basketViewModel)
             }
             composable("products/{categoryId}/{title}",
                 arguments = listOf(
@@ -51,10 +61,8 @@ fun MainScreen(mainActivity: MainActivity) {
                 arguments = listOf(navArgument("product") { type = NavType.LongType })
             ) { backStack ->
                 fullScreen = true
-                backStack.arguments?.getLong("product").let {
-                    val basketViewModel =
-                        ViewModelProvider(mainActivity)[BasketEntityViewModel::class.java]
-                    ShowProductsScreen(it!!, navController, basketViewModel)
+                backStack.arguments?.getLong("product").let { productId ->
+                    ShowProductsScreen(productId!!, navController, basketViewModel)
                 }
             }
         }

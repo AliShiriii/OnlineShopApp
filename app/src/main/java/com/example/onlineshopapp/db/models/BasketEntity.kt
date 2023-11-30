@@ -2,8 +2,6 @@ package com.example.onlineshopapp.db.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.onlineshopapp.models.products.ProductCategory
-import com.example.onlineshopapp.models.products.ProductColor
 import com.example.onlineshopapp.models.products.ProductSize
 
 @Entity
@@ -15,4 +13,6 @@ data class BasketEntity(
     var sizeId: Long,
     val image: String?,
     val price: Long?,
-    val title: String?)
+    val title: String?,
+    val colorHex: String,
+)

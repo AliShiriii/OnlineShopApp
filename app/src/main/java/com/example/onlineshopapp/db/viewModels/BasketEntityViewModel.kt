@@ -1,6 +1,7 @@
 package com.example.onlineshopapp.db.viewModels
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.onlineshopapp.db.models.BasketEntity
@@ -9,7 +10,7 @@ import com.example.onlineshopapp.db.repository.BasketEntityRepository
 class BasketEntityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository = BasketEntityRepository(application)
-
+    var dataList = mutableStateOf<List<BasketEntity>>(listOf())
     private suspend fun insert(basketEntity: BasketEntity) {
         repository.insert(basketEntity)
     }
@@ -21,15 +22,13 @@ class BasketEntityViewModel(application: Application) : AndroidViewModel(applica
 
     suspend fun addTooBasket(basketEntity: BasketEntity) {
 
-        val allBasketList = repository.getAllBasket()
-
-        if (allBasketList != null && allBasketList.any { x ->
+        if (dataList.value.any { x ->
                 x.productId == basketEntity.productId &&
                         x.colorId == basketEntity.colorId
                         && x.sizeId == basketEntity.sizeId
             }) {
             val oldBasket =
-                allBasketList.first { x ->
+                dataList.value.first { x ->
                     x.productId == basketEntity.productId &&
                             x.colorId == basketEntity.colorId
                             && x.sizeId == basketEntity.sizeId
@@ -38,8 +37,7 @@ class BasketEntityViewModel(application: Application) : AndroidViewModel(applica
             oldBasket.quantity++
             update(oldBasket)
         } else {
-
-
+            insert(basketEntity)
         }
     }
 
@@ -53,5 +51,9 @@ class BasketEntityViewModel(application: Application) : AndroidViewModel(applica
 
     suspend fun getAllBasketList(): List<BasketEntity> {
         return repository.getAllBasket()
+    }
+
+    fun getAllBasketLive(): LiveData<List<BasketEntity>> {
+        return repository.getAllLive()
     }
 }

@@ -21,12 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.db.models.BasketEntity
 import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
 import com.example.onlineshopapp.ui.components.LoadingInColumn
-import com.example.onlineshopapp.ui.components.LoadingInRow
 import com.example.onlineshopapp.viewModels.products.ProductViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
@@ -216,10 +214,18 @@ fun ShowProductsScreen(
                                     quantity = 1,
                                     sizeId = data.value!!.sizes!![selectedSize].id!!,
                                     colorId = data.value!!.colors!![selectedColors].id!!,
+                                    image = data.value!!.image,
+                                    price = data.value!!.price,
+                                    title = data.value!!.title,
+                                    colorHex = data.value!!.colors?.get(selectedColors)?.hexValue!!
                                 )
                                 basketVieModel.addTooBasket(basket)
                             }
-                            Toast.makeText(context, "Product added to your basket!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Product added to your basket!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             navController.popBackStack()
                         },
                         shape = RoundedCornerShape(15.dp),
