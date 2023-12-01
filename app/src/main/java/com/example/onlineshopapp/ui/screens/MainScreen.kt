@@ -29,7 +29,7 @@ fun MainScreen(mainActivity: MainActivity) {
 
     Scaffold(topBar = {
         if (!fullScreen)
-            TopAppView(navController)
+            TopAppView(navController, basketViewModel)
     }) {
 
         NavHost(

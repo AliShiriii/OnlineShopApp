@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.example.onlineshopapp.R
 import com.example.onlineshopapp.db.models.BasketEntity
 import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
+import com.example.onlineshopapp.ui.components.BasketItemView
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -68,69 +69,4 @@ fun BasketListScreen(navController: NavHostController, basketViewModel: BasketEn
             }
         }
     }
-}
-
-@Composable
-fun BasketItemView(basketEntity: BasketEntity) {
-
-    Row(modifier = Modifier.fillMaxWidth()) {
-
-        Card(
-            modifier = Modifier.size(100.dp),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            GlideImage(
-                imageModel = basketEntity.image!!,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-                loading = {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(15.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                },
-                failure = {
-                    Text(text = "image request failed.")
-                })
-        }
-        Spacer(modifier = Modifier.width(10.dp))
-
-        Column {
-            Text(text = basketEntity.title!!)
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(text = "${basketEntity.price!!}")
-            Spacer(modifier = Modifier.width(5.dp))
-
-            Card(
-                shape = RoundedCornerShape(15.dp),
-                backgroundColor =
-                Color(android.graphics.Color.parseColor("#${basketEntity.colorHex}")),
-                modifier = Modifier.size(40.dp),
-                border = BorderStroke(1.dp, Color.White),
-                content = {}
-            )
-
-            Row {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.image_remove_circle),
-                        contentDescription = ""
-                    )
-                }
-                Text(text = "${basketEntity.quantity}")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.AddCircle, contentDescription = "")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "")
-                }
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(10.dp))
 }
