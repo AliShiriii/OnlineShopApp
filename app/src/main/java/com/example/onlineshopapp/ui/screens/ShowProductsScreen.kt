@@ -217,7 +217,8 @@ fun ShowProductsScreen(
                                     image = data.value!!.image,
                                     price = data.value!!.price,
                                     title = data.value!!.title,
-                                    colorHex = data.value!!.colors?.get(selectedColors)?.hexValue!!
+                                    colorHex = data.value!!.colors?.get(selectedColors)?.hexValue!!,
+                                    size = data.value!!.sizes?.get(selectedSize)?.title!!
                                 )
                                 basketVieModel.addTooBasket(basket)
                             }

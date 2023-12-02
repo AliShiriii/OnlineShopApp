@@ -20,6 +20,16 @@ class BasketEntityViewModel(application: Application) : AndroidViewModel(applica
         repository.update(basketEntity)
     }
 
+    suspend fun incrementQuantity(basketEntity: BasketEntity) {
+        if (basketEntity.id <= 0) return
+        repository.incrementQuantity(basketEntity)
+    }
+
+    suspend fun decrementQuantity(basketEntity: BasketEntity) {
+        if (basketEntity.id <= 0) return
+        repository.decrementQuantity(basketEntity)
+    }
+
     suspend fun addTooBasket(basketEntity: BasketEntity) {
 
         if (dataList.value.any { x ->

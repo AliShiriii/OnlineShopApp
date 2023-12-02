@@ -35,10 +35,22 @@ class BasketEntityRepository(application: Application) {
     }
 
     suspend fun delete(basketEntity: BasketEntity) {
+        if (basketEntity.id <= 0) return
         basketDao.delete(basketEntity)
     }
 
     suspend fun deleteAll() {
         return basketDao.deleteAll()
+    }
+
+    suspend fun incrementQuantity(basketEntity: BasketEntity) {
+        basketEntity.quantity++
+        update(basketEntity)
+    }
+
+    suspend fun decrementQuantity(basketEntity: BasketEntity) {
+        basketEntity.quantity--
+        if (basketEntity.quantity <= 0) delete(basketEntity)
+        else update(basketEntity)
     }
 }

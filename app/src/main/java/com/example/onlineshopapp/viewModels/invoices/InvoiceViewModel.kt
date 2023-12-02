@@ -38,5 +38,4 @@ class InvoiceViewModel @Inject constructor(private val invoiceRepository: Invoic
             onResponse(response)
         }
     }
-
 }

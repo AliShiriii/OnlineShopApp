@@ -1,37 +1,45 @@
 package com.example.onlineshopapp.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.onlineshopapp.R
+import androidx.navigation.NavController
 import com.example.onlineshopapp.db.models.BasketEntity
+import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BasketItemView(basketEntity: BasketEntity) {
+fun BasketItemView(
+    basketEntity: BasketEntity,
+    basketViewModel: BasketEntityViewModel,
+    navController: NavController,
+) {
+
+    var quantity by remember { mutableStateOf(basketEntity.quantity) }
 
     Row(modifier = Modifier.fillMaxWidth()) {
-
         Card(
             modifier = Modifier
                 .size(100.dp)
                 .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp), clip = true),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(20.dp),
+            onClick = { navController.navigate("showProduct/${basketEntity.productId}") }
         ) {
             GlideImage(
                 imageModel = basketEntity.image!!,
@@ -67,7 +75,12 @@ fun BasketItemView(basketEntity: BasketEntity) {
 
             Row {
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            basketViewModel.decrementQuantity(basketEntity)
+                        }
+                        quantity--
+                    },
                     Modifier.size(26.dp)
                 ) {
                     Icon(
@@ -76,11 +89,17 @@ fun BasketItemView(basketEntity: BasketEntity) {
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "${basketEntity.quantity}", fontSize = 20.sp)
+                Text(text = quantity.toString(), fontSize = 20.sp)
                 Spacer(modifier = Modifier.width(10.dp))
 
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            basketViewModel.incrementQuantity(basketEntity)
+                        }
+
+                        quantity++
+                    },
                     modifier = Modifier.size(26.dp)
                 ) {
                     Icon(
@@ -90,7 +109,11 @@ fun BasketItemView(basketEntity: BasketEntity) {
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            basketViewModel.delete(basketEntity)
+                        }
+                    },
                     modifier = Modifier.size(25.dp)
                 ) {
                     Icon(
@@ -111,10 +134,8 @@ fun BasketItemView(basketEntity: BasketEntity) {
             border = BorderStroke(1.dp, Color.White),
             content = {}
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = basketEntity.size, fontSize = 22.sp, color = Color.Gray)
     }
     Spacer(modifier = Modifier.height(10.dp))
 }
-//Image(
-//painter = painterResource(id = R.drawable.image_remove_circle),
-//contentDescription = ""
-//)

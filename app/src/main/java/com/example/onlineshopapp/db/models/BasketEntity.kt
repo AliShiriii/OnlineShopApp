@@ -15,4 +15,5 @@ data class BasketEntity(
     val price: Long?,
     val title: String?,
     val colorHex: String,
+    val size: String,
 )
