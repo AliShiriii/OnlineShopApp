@@ -28,12 +28,17 @@ import kotlinx.coroutines.launch
 fun BasketItemView(
     basketEntity: BasketEntity,
     basketViewModel: BasketEntityViewModel,
+    totalPrice: MutableState<Long>,
     navController: NavController,
 ) {
 
     var quantity by remember { mutableStateOf(basketEntity.quantity) }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp, 0.dp)
+    ) {
         Card(
             modifier = Modifier
                 .size(100.dp)
@@ -80,6 +85,7 @@ fun BasketItemView(
                             basketViewModel.decrementQuantity(basketEntity)
                         }
                         quantity--
+                        totalPrice.value -= basketEntity.price
                     },
                     Modifier.size(26.dp)
                 ) {

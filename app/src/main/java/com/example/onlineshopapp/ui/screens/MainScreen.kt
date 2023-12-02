@@ -44,6 +44,10 @@ fun MainScreen(mainActivity: MainActivity) {
                 fullScreen = true
                 BasketListScreen(navController, basketViewModel)
             }
+            composable("proceedToPayment") {
+                fullScreen = true
+                UserPaymentScreen(navController)
+            }
             composable("products/{categoryId}/{title}",
                 arguments = listOf(
                     navArgument("categoryId") { type = NavType.LongType },
