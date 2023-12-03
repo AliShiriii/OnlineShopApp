@@ -112,25 +112,25 @@ fun BasketListScreen(navController: NavHostController, basketViewModel: BasketEn
                 }
                 Spacer(modifier = Modifier.width(20.dp))
 
-                Button(
-                    onClick = {
-                    },
-                    shape = RoundedCornerShape(15.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Dark
-                    ),
-                ) {
-                    Text(
-                        text = "\$Pay",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.width(30.dp))
-
+//                Button(
+//                    onClick = {
+//                    },
+//                    shape = RoundedCornerShape(15.dp),
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .height(50.dp),
+//                    colors = ButtonDefaults.buttonColors(
+//                        backgroundColor = Dark
+//                    ),
+//                ) {
+//                    Text(
+//                        text = "\$Pay",
+//                        fontWeight = FontWeight.Bold,
+//                        color = Color.White
+//                    )
+//                }
+//                Spacer(modifier = Modifier.width(30.dp))
+//
             }
         }
     }

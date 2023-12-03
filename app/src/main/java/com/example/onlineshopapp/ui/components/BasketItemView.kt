@@ -105,6 +105,8 @@ fun BasketItemView(
                         }
 
                         quantity++
+                        totalPrice.value += basketEntity.price
+
                     },
                     modifier = Modifier.size(26.dp)
                 ) {
