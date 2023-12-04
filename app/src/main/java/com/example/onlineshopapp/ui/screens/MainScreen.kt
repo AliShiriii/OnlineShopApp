@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.example.onlineshopapp.MainActivity
 import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
 import com.example.onlineshopapp.ui.components.TopAppView
@@ -61,13 +62,21 @@ fun MainScreen(mainActivity: MainActivity) {
                 ProductsScreen(id, title!!, navController)
             }
             composable(
-                "showProduct/{product}",
-                arguments = listOf(navArgument("product") { type = NavType.LongType })
+                "showProduct/{productId}",
+                arguments = listOf(navArgument("productId") { type = NavType.LongType })
             ) { backStack ->
                 fullScreen = true
-                backStack.arguments?.getLong("product").let { productId ->
+                backStack.arguments?.getLong("productId").let { productId ->
                     ShowProductsScreen(productId!!, navController, basketViewModel)
                 }
+            }
+            composable(
+                "invoice/{id}",
+                deepLinks = listOf(navDeepLink {
+                    uriPattern = "app://onlineshopholosen.ir/{id}"
+                })
+            ) { backkStackEntry ->
+                InvoiceScreen(navController, backkStackEntry.arguments?.getLong("id"))
             }
         }
     }

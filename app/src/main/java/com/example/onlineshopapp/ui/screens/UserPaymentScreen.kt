@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -60,6 +61,8 @@ fun UserPaymentScreen(
     var userNameError by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var passwordError by remember { mutableStateOf(false) }
+
+    var isLoading by remember { mutableStateOf(false) }
 
     Column {
         Row {
@@ -287,78 +290,97 @@ fun UserPaymentScreen(
                     }
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Button(
-                        onClick = {
-                            var hasError = false
+                    if (!isLoading) {
+                        Button(
+                            onClick = {
+                                var hasError = false
 
-                            if (firstName.text.isEmpty()) {
-                                firstNameError = true
-                            }
-                            if (lastName.text.isEmpty()) {
-                                lastNameError = true
-                            }
-                            if (phone.text.isEmpty()) {
-                                phoneError = true
-                            }
-                            if (userName.text.isEmpty()) {
-                                userNameError = true
-                            }
-                            if (password.text.isEmpty()) {
-                                passwordError = true
-                            }
-                            if (address.text.isEmpty()) {
-                                addressError = true
-                            }
-                            if (postalCode.text.isEmpty()) {
-                                postalCodeError = true
-                            }
-                            if (firstNameError || lastNameError || phoneError
-                                || userNameError || passwordError || addressError
-                                || postalCodeError
-                            ) {
-                                return@Button
-                            }
-                            var userInfo = UserVM(
-                                username = userName.text,
-                                password = password.text,
-                                firstName = firstName.text,
-                                lastName = lastName.text,
-                                address = address.text,
-                                phone = phone.text,
-                                postalCode = postalCode.text
-                            )
-                            var items = ArrayList<InvoiceItem>()
-                            basketEntityViewModel.dataList.value.forEach {
-                                items.add(InvoiceItem.convertFromBasket(it))
-                            }
-                            var request = PaymentTransaction(user = userInfo, items = items)
-                            transactionViewModel.goToPayment(request) { response ->
-                                if (response.status == "Ok" && response.data!!.isNotEmpty()) {
-                                    val intentBrowser =
-                                        Intent(Intent.ACTION_VIEW, Uri.parse(response.data[0]))
-                                    context.startActivity(intentBrowser)
-                                    mainActivity.finish()
-                                } else if (response.message!!.isNotEmpty()) {
-
-                                    Toast.makeText(context, response.message, Toast.LENGTH_SHORT)
-                                        .show()
+                                if (firstName.text.isEmpty()) {
+                                    firstNameError = true
                                 }
-                            }
+                                if (lastName.text.isEmpty()) {
+                                    lastNameError = true
+                                }
+                                if (phone.text.isEmpty()) {
+                                    phoneError = true
+                                }
+                                if (userName.text.isEmpty()) {
+                                    userNameError = true
+                                }
+                                if (password.text.isEmpty()) {
+                                    passwordError = true
+                                }
+                                if (address.text.isEmpty()) {
+                                    addressError = true
+                                }
+                                if (postalCode.text.isEmpty()) {
+                                    postalCodeError = true
+                                }
+                                if (firstNameError || lastNameError || phoneError
+                                    || userNameError || passwordError || addressError
+                                    || postalCodeError
+                                ) {
+                                    return@Button
+                                }
+                                var userInfo = UserVM(
+                                    username = userName.text,
+                                    password = password.text,
+                                    firstName = firstName.text,
+                                    lastName = lastName.text,
+                                    address = address.text,
+                                    phone = phone.text,
+                                    postalCode = postalCode.text
+                                )
+                                var items = ArrayList<InvoiceItem>()
+                                basketEntityViewModel.dataList.value.forEach {
+                                    items.add(InvoiceItem.convertFromBasket(it))
+                                }
+                                var request = PaymentTransaction(user = userInfo, items = items)
 
-                        },
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Dark
-                        ),
-                    ) {
-                        Text(
-                            text = "\$Pay",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
+                                isLoading = true
+                                transactionViewModel.goToPayment(request) { response ->
+                                    if (response.status == "Ok" && response.data!!.isNotEmpty()) {
+                                        val intentBrowser =
+                                            Intent(Intent.ACTION_VIEW, Uri.parse(response.data[0]))
+                                        context.startActivity(intentBrowser)
+                                        mainActivity.finish()
+                                    } else if (response.message!!.isNotEmpty()) {
+
+                                        Toast.makeText(
+                                            context,
+                                            response.message,
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                    isLoading = false
+
+                                }
+
+                            },
+                            shape = RoundedCornerShape(15.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .height(50.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Dark
+                            ),
+                        ) {
+                            Text(
+                                text = "\$Pay",
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                    }
+                    if (isLoading) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(15.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
                     Spacer(modifier = Modifier.width(30.dp))
 
