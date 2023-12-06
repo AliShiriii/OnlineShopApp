@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -83,11 +84,15 @@ fun UserPaymentScreen(
                         value = firstName,
                         onValueChange = {
                             firstName = it
-                            firstNameError
+                            firstNameError = false
                         },
                         label = { Text(text = "First Name") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
                         trailingIcon = {
                             if (firstNameError) {
                                 Icon(
@@ -113,9 +118,13 @@ fun UserPaymentScreen(
                         value = lastName,
                         onValueChange = {
                             lastName = it
-                            lastNameError
+                            lastNameError = false
                         },
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
                         label = { Text(text = "Last Name") },
                         modifier = Modifier.fillMaxWidth(),
                         trailingIcon = {
@@ -143,9 +152,13 @@ fun UserPaymentScreen(
                         value = phone,
                         onValueChange = {
                             phone = it
-                            phoneError
+                            phoneError = false
                         },
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Phone,
+                            imeAction = ImeAction.Next
+                        ),
                         label = { Text(text = "Phone") },
                         modifier = Modifier.fillMaxWidth(),
                         trailingIcon = {
@@ -173,9 +186,13 @@ fun UserPaymentScreen(
                         value = userName,
                         onValueChange = {
                             userName = it
-                            userNameError
+                            userNameError = false
                         },
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
                         label = { Text(text = "User Name") },
                         modifier = Modifier.fillMaxWidth(),
                         trailingIcon = {
@@ -192,7 +209,7 @@ fun UserPaymentScreen(
                     )
                     if (userNameError) {
                         Text(
-                            text = "Please enter your user name",
+                            text = "Please enter your username",
                             color = Color.Red,
                             fontSize = 12.sp
                         )
@@ -202,13 +219,16 @@ fun UserPaymentScreen(
                         value = password,
                         onValueChange = {
                             password = it
-                            passwordError
+                            passwordError = false
                         },
                         singleLine = true,
                         label = { Text(text = "Password") },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Next
+                        ),
                         trailingIcon = {
                             if (passwordError) {
                                 Icon(
@@ -232,11 +252,49 @@ fun UserPaymentScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     OutlinedTextField(
+                        value = postalCode,
+                        onValueChange = {
+                            postalCode = it
+                            postalCodeError = false
+                        },
+                        singleLine = true,
+                        label = { Text(text = "Postal Code") },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
+                        trailingIcon = {
+                            if (postalCodeError) {
+                                Icon(
+                                    imageVector = Icons.Filled.Warning,
+                                    contentDescription = "error",
+                                    tint = Color.Red
+                                )
+
+                            }
+                        },
+                        isError = postalCodeError
+                    )
+                    if (postalCodeError) {
+                        Text(
+                            text = "Please enter your postal code",
+                            color = Color.Red,
+                            fontSize = 12.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+
+                    OutlinedTextField(
                         value = address,
                         onValueChange = {
                             address = it
-                            addressError
+                            addressError = false
                         },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ),
                         label = { Text(text = "Address") },
                         modifier = Modifier.fillMaxWidth(),
                         trailingIcon = {
@@ -258,43 +316,12 @@ fun UserPaymentScreen(
                             fontSize = 12.sp
                         )
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
 
-                    OutlinedTextField(
-                        value = postalCode,
-                        onValueChange = {
-                            postalCode = it
-                            postalCodeError
-                        },
-                        singleLine = true,
-                        label = { Text(text = "Postal Code") },
-                        modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = {
-                            if (postalCodeError) {
-                                Icon(
-                                    imageVector = Icons.Filled.Warning,
-                                    contentDescription = "error",
-                                    tint = Color.Red
-                                )
-
-                            }
-                        },
-                        isError = postalCodeError
-                    )
-                    if (postalCodeError) {
-                        Text(
-                            text = "Please enter your postal code",
-                            color = Color.Red,
-                            fontSize = 12.sp
-                        )
-                    }
                     Spacer(modifier = Modifier.height(20.dp))
 
                     if (!isLoading) {
                         Button(
                             onClick = {
-                                var hasError = false
-
                                 if (firstName.text.isEmpty()) {
                                     firstNameError = true
                                 }
@@ -349,7 +376,8 @@ fun UserPaymentScreen(
                                         Toast.makeText(
                                             context,
                                             response.message,
-                                            Toast.LENGTH_SHORT).show()
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                     isLoading = false
 

@@ -1,8 +1,10 @@
 package com.example.onlineshopapp.db.viewModels
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.example.onlineshopapp.db.models.BasketEntity
 import com.example.onlineshopapp.db.models.UserEntity
 import com.example.onlineshopapp.db.repository.UserEntityRepository
 
@@ -10,7 +12,7 @@ import com.example.onlineshopapp.db.repository.UserEntityRepository
 class UserEntityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository = UserEntityRepository(application)
-    private var currentUser = repository.getCurrentUser()
+    var currentUser = mutableStateOf<UserEntity?>(null)
 
     suspend fun insert(userEntity: UserEntity) {
         repository.insert(userEntity)
@@ -29,7 +31,11 @@ class UserEntityViewModel(application: Application) : AndroidViewModel(applicati
         return repository.deleteAll()
     }
 
-     fun getCurrentUser(): LiveData<UserEntity> {
-        return currentUser
+    fun getCurrentUser(): LiveData<UserEntity> {
+        return repository.getCurrentUser()
+    }
+
+    fun isLoggedIn(): Boolean {
+        return currentUser.value != null
     }
 }

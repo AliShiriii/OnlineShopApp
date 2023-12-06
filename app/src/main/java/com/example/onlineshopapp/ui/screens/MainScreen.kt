@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.onlineshopapp.MainActivity
 import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
+import com.example.onlineshopapp.db.viewModels.UserEntityViewModel
 import com.example.onlineshopapp.ui.components.TopAppView
 import com.example.onlineshopapp.utils.ThisApp
 
@@ -23,14 +24,18 @@ fun MainScreen(mainActivity: MainActivity) {
     var fullScreen by remember { mutableStateOf(false) }
     val basketViewModel =
         ViewModelProvider(mainActivity)[BasketEntityViewModel::class.java]
-
+    val userEntityViewModel =
+        ViewModelProvider(mainActivity)[UserEntityViewModel::class.java]
     basketViewModel.getAllBasketLive().observe(mainActivity) {
         basketViewModel.dataList.value = it
+    }
+    userEntityViewModel.getCurrentUser().observe(mainActivity) {
+        userEntityViewModel.currentUser.value = it
     }
 
     Scaffold(topBar = {
         if (!fullScreen)
-            TopAppView(navController, basketViewModel)
+            TopAppView(navController, basketViewModel, userEntityViewModel)
     }) {
 
         NavHost(
@@ -75,9 +80,20 @@ fun MainScreen(mainActivity: MainActivity) {
                 deepLinks = listOf(navDeepLink {
                     uriPattern = "app://onlineshopholosen.ir/{id}"
                 })
-            ) { backkStackEntry ->
-                InvoiceScreen(navController, backkStackEntry.arguments?.getLong("id"))
+            ) { backStackEntry ->
+                InvoiceScreen(navController, backStackEntry.arguments?.getLong("id"))
             }
+
+            composable("login") {
+                fullScreen = true
+                LoginScreen(navController, userEntityViewModel)
+            }
+
+            composable("dashboard") {
+                fullScreen = true
+                DashboardScreen(navController, userEntityViewModel)
+            }
+
         }
     }
 }
