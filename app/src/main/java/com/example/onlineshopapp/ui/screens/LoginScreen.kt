@@ -48,16 +48,14 @@ fun LoginScreen(
     var passwordError by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
 
-    Column {
-        IconButton(onClick = { navController.popBackStack() }) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-        }
-    }
-
     LazyColumn {
-        item {
 
+        item {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+            }
         }
+
         item {
             Spacer(modifier = Modifier.width(5.dp))
             Text(text = "Login", fontSize = 20.sp, textAlign = TextAlign.Center)
