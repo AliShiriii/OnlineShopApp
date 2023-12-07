@@ -22,6 +22,8 @@ fun MainScreen(mainActivity: MainActivity) {
 
     val navController = rememberNavController()
     var fullScreen by remember { mutableStateOf(false) }
+    var showHomeButton by remember { mutableStateOf(false) }
+
     val basketViewModel =
         ViewModelProvider(mainActivity)[BasketEntityViewModel::class.java]
     val userEntityViewModel =
@@ -35,7 +37,7 @@ fun MainScreen(mainActivity: MainActivity) {
 
     Scaffold(topBar = {
         if (!fullScreen)
-            TopAppView(navController, basketViewModel, userEntityViewModel)
+            TopAppView(navController, basketViewModel, userEntityViewModel, showHomeButton)
     }) {
 
         NavHost(
@@ -44,14 +46,17 @@ fun MainScreen(mainActivity: MainActivity) {
         ) {
             composable("Home") {
                 fullScreen = false
+                showHomeButton = false
                 HomeScreen(navController)
             }
             composable("Basket") {
                 fullScreen = true
+                showHomeButton = false
                 BasketListScreen(navController, basketViewModel)
             }
             composable("proceedToPayment") {
                 fullScreen = true
+                showHomeButton = false
                 UserPaymentScreen(navController, basketViewModel, mainActivity)
             }
             composable("products/{categoryId}/{title}",
@@ -61,6 +66,7 @@ fun MainScreen(mainActivity: MainActivity) {
                 )
             ) { backStack ->
                 fullScreen = false
+                showHomeButton = false
                 val id = backStack.arguments?.getLong("categoryId")
                 val title = backStack.arguments?.getString("title")
                 ThisApp.productCategoryId = id!!
@@ -71,6 +77,7 @@ fun MainScreen(mainActivity: MainActivity) {
                 arguments = listOf(navArgument("productId") { type = NavType.LongType })
             ) { backStack ->
                 fullScreen = true
+                showHomeButton = false
                 backStack.arguments?.getLong("productId").let { productId ->
                     ShowProductsScreen(productId!!, navController, basketViewModel)
                 }
@@ -83,21 +90,30 @@ fun MainScreen(mainActivity: MainActivity) {
                 arguments = listOf(navArgument("id") { type = NavType.LongType })
 
             ) { backStackEntry ->
+                showHomeButton = true
+
+                if (userEntityViewModel.currentUser.value != null) {
+                    ThisApp.userId = backStackEntry.arguments?.getLong("id")!!
+                    ThisApp.token = userEntityViewModel.currentUser.value!!.token!!
+                }
                 InvoiceScreen(navController, backStackEntry.arguments?.getLong("id"))
             }
 
             composable("login") {
                 fullScreen = true
+                showHomeButton = false
                 LoginScreen(navController, userEntityViewModel)
             }
 
             composable("dashboard") {
                 fullScreen = true
+                showHomeButton = false
                 DashboardScreen(navController, userEntityViewModel)
             }
 
             composable("invoices") {
                 fullScreen = true
+                showHomeButton = false
                 InvoiceListScreen(navController)
             }
         }

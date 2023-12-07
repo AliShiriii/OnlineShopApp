@@ -14,5 +14,5 @@ data class UserEntity(
     var postalCode: String?,
     var token: String?,
     var username: String?,
-    var userId: Long?,
+    var userId: Long,
 )
