@@ -22,6 +22,9 @@ import com.example.onlineshopapp.ui.theme.LightBlue
 import com.example.onlineshopapp.ui.theme.Orange
 import com.example.onlineshopapp.ui.theme.Red
 import com.example.onlineshopapp.utils.ThisApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserEntityViewModel) {
@@ -131,7 +134,10 @@ fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserE
                     imageVector = Icons.Filled.ExitToApp,
                     iconBackgroundColor = Red
                 ) {
-
+                    CoroutineScope(Dispatchers.IO).launch {
+                        userEntityViewModel.deleteAll()
+                    }
+                    navController.navigate("home")
                 }
             }
         }

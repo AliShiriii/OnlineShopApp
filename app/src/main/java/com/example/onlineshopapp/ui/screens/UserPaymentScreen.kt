@@ -30,20 +30,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.onlineshopapp.MainActivity
 import com.example.onlineshopapp.db.viewModels.BasketEntityViewModel
-import com.example.onlineshopapp.models.customer.Customer
-import com.example.onlineshopapp.models.customer.User
+import com.example.onlineshopapp.db.viewModels.UserEntityViewModel
 import com.example.onlineshopapp.models.customer.UserVM
 import com.example.onlineshopapp.models.invoices.InvoiceItem
 import com.example.onlineshopapp.models.invoices.PaymentTransaction
 import com.example.onlineshopapp.ui.theme.Dark
+import com.example.onlineshopapp.viewModels.customer.UserViewModel
 import com.example.onlineshopapp.viewModels.invoices.TransactionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserPaymentScreen(
     navController: NavController,
     basketEntityViewModel: BasketEntityViewModel,
+    userEntityViewModel: UserEntityViewModel,
     mainActivity: MainActivity,
     transactionViewModel: TransactionViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel(),
 ) {
 
     var context = LocalContext.current
@@ -367,10 +372,26 @@ fun UserPaymentScreen(
                                 isLoading = true
                                 transactionViewModel.goToPayment(request) { response ->
                                     if (response.status == "Ok" && response.data!!.isNotEmpty()) {
+
+                                        userViewModel.login(
+                                            UserVM(
+                                                username = userName.text,
+                                                password = password.text
+                                            )
+                                        ) { userResponse ->
+                                            isLoading = false
+                                            if (userResponse.status == "OK") {
+                                                val user = userResponse.data!![0]
+                                                CoroutineScope(Dispatchers.IO).launch {
+                                                    userEntityViewModel.insert(user.convertToEntity())
+                                                }
+                                                mainActivity.finish()
+
+                                            }
+                                        }
                                         val intentBrowser =
                                             Intent(Intent.ACTION_VIEW, Uri.parse(response.data[0]))
                                         context.startActivity(intentBrowser)
-                                        mainActivity.finish()
                                     } else if (response.message!!.isNotEmpty()) {
 
                                         Toast.makeText(
@@ -380,7 +401,6 @@ fun UserPaymentScreen(
                                         ).show()
                                     }
                                     isLoading = false
-
                                 }
 
                             },

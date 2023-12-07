@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     navController: NavHostController,
     userEntityViewModel: UserEntityViewModel,
-    userViewModel: UserViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current

@@ -35,7 +35,7 @@ fun InvoiceScreen(
     var invoice by remember { mutableStateOf(viewModel.data) }
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
 
-    if (isLoading.value) {
+    if (isLoading.value || invoice.value == null) {
 
         LoadingInColumn(
             modifier = Modifier

@@ -57,7 +57,7 @@ fun MainScreen(mainActivity: MainActivity) {
             composable("proceedToPayment") {
                 fullScreen = true
                 showHomeButton = false
-                UserPaymentScreen(navController, basketViewModel, mainActivity)
+                UserPaymentScreen(navController, basketViewModel, userEntityViewModel, mainActivity)
             }
             composable("products/{categoryId}/{title}",
                 arguments = listOf(
