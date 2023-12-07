@@ -6,4 +6,5 @@ import androidx.navigation.NavHostController
 @Composable
 fun InvoiceScreen(navController: NavHostController, string: Long?) {
 
+
 }

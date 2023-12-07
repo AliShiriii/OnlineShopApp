@@ -21,8 +21,8 @@ import com.example.onlineshopapp.ui.theme.Aqua
 import com.example.onlineshopapp.ui.theme.LightBlue
 import com.example.onlineshopapp.ui.theme.Orange
 import com.example.onlineshopapp.ui.theme.Red
+import com.example.onlineshopapp.utils.ThisApp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserEntityViewModel) {
 
@@ -95,7 +95,10 @@ fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserE
                     imageVector = Icons.Filled.Star,
                     iconBackgroundColor = LightBlue
                 ) {
+                    ThisApp.userId = currentUser.value?.userId!!
+                    ThisApp.token = currentUser.value?.token!!
 
+                    navController.navigate("invoices")
                 }
             }
 

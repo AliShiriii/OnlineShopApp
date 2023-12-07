@@ -79,7 +79,9 @@ fun MainScreen(mainActivity: MainActivity) {
                 "invoice/{id}",
                 deepLinks = listOf(navDeepLink {
                     uriPattern = "app://onlineshopholosen.ir/{id}"
-                })
+                }),
+                arguments = listOf(navArgument("id") { type = NavType.LongType })
+
             ) { backStackEntry ->
                 InvoiceScreen(navController, backStackEntry.arguments?.getLong("id"))
             }
@@ -94,6 +96,10 @@ fun MainScreen(mainActivity: MainActivity) {
                 DashboardScreen(navController, userEntityViewModel)
             }
 
+            composable("invoices") {
+                fullScreen = true
+                InvoiceListScreen(navController)
+            }
         }
     }
 }
