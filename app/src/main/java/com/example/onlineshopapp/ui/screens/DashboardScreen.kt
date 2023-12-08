@@ -81,7 +81,10 @@ fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserE
                 )
             }
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                ThisApp.token = currentUser.value!!.token!!
+                navController.navigate("editProfile")
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.Edit, contentDescription = ""
                 )
@@ -107,12 +110,12 @@ fun DashboardScreen(navController: NavHostController, userEntityViewModel: UserE
 
             item {
                 AdvancedButton(
-                    title = "About",
-                    subTitle = "About The Application",
-                    imageVector = Icons.Filled.Favorite,
+                    title = "Change Password",
+                    subTitle = "Change Your Password",
+                    imageVector = Icons.Filled.Lock,
                     iconBackgroundColor = Aqua
                 ) {
-
+                    navController.navigate("changePassword")
                 }
             }
 

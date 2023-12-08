@@ -9,7 +9,7 @@ data class UserVM(
     var lastName: String? = "",
     var address: String? = "",
     var oldPassword: String? = null,
-    var password: String?,
+    var password: String? = null,
     var phone: String? = "",
     var postalCode: String? = "",
     var repeatPassword: String? = null,

@@ -20,7 +20,7 @@ class UserRepository @Inject constructor(private val userApi: UserApi): BaseRepo
         }
     }
 
-    suspend fun getBlogById(
+    suspend fun changePassword(
         user: UserVM,
         token: String,
     ): ServiceResponse<User> {

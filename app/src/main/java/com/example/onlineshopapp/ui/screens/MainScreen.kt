@@ -116,6 +116,16 @@ fun MainScreen(mainActivity: MainActivity) {
                 showHomeButton = false
                 InvoiceListScreen(navController)
             }
+            composable("editProfile"){
+                fullScreen = true
+                showHomeButton = false
+                EditProfileScreen(navController, userEntityViewModel)
+            }
+            composable("changePassword") {
+                fullScreen = true
+                showHomeButton = false
+                ChangePasswordScreen(navController, userEntityViewModel)
+            }
         }
     }
 }
