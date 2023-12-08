@@ -39,7 +39,15 @@ fun BasketListScreen(navController: NavHostController, basketViewModel: BasketEn
                 }
                 Spacer(modifier = Modifier.width(5.dp))
                 Column {
-                    Text(text = "Sopping Cart", fontSize = 20.sp, textAlign = TextAlign.Center)
+                    Text(
+                        text = "Sopping Cart", fontSize = 20.sp,
+                        modifier = Modifier.padding(
+                            0.dp,
+                            if (dataList.value.isNotEmpty()) 0.dp else 9.dp,
+                            0.dp, 0.dp
+                        ),
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(5.dp))
                     if (dataList.value.isNotEmpty()) {
                         Text(
@@ -50,6 +58,8 @@ fun BasketListScreen(navController: NavHostController, basketViewModel: BasketEn
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
         }
         if (dataList.value.isEmpty()) {
             item {

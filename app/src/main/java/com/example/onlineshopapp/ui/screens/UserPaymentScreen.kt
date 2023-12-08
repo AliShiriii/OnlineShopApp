@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,8 +17,10 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -52,23 +55,27 @@ fun UserPaymentScreen(
 ) {
 
     var context = LocalContext.current
+    var currentUser by remember { mutableStateOf(userEntityViewModel.currentUser) }
+    var isLoggedIn by remember { mutableStateOf(userEntityViewModel.currentUser.value != null) }
 
-    var firstName by remember { mutableStateOf(TextFieldValue()) }
+    var firstName by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.firstName!! else "")) }
     var firstNameError by remember { mutableStateOf(false) }
-    var lastName by remember { mutableStateOf(TextFieldValue()) }
+    var lastName by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.lastName!! else "")) }
     var lastNameError by remember { mutableStateOf(false) }
-    var phone by remember { mutableStateOf(TextFieldValue()) }
+    var phone by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.phone!! else "")) }
     var phoneError by remember { mutableStateOf(false) }
-    var postalCode by remember { mutableStateOf(TextFieldValue()) }
+    var postalCode by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.postalCode!! else "")) }
     var postalCodeError by remember { mutableStateOf(false) }
-    var address by remember { mutableStateOf(TextFieldValue()) }
+    var address by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.address!! else "")) }
     var addressError by remember { mutableStateOf(false) }
-    var userName by remember { mutableStateOf(TextFieldValue()) }
+    var userName by remember { mutableStateOf(TextFieldValue(if (isLoggedIn) currentUser.value!!.username!! else "")) }
     var userNameError by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var passwordError by remember { mutableStateOf(false) }
 
     var isLoading by remember { mutableStateOf(false) }
+
+    var focusManager = LocalFocusManager.current
 
     Column {
         Row {
@@ -98,6 +105,9 @@ fun UserPaymentScreen(
                             keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Next
                         ),
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         trailingIcon = {
                             if (firstNameError) {
                                 Icon(
@@ -125,6 +135,9 @@ fun UserPaymentScreen(
                             lastName = it
                             lastNameError = false
                         },
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -159,6 +172,9 @@ fun UserPaymentScreen(
                             phone = it
                             phoneError = false
                         },
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Phone,
@@ -189,10 +205,14 @@ fun UserPaymentScreen(
 
                     OutlinedTextField(
                         value = userName,
+                        enabled = currentUser.value == null,
                         onValueChange = {
                             userName = it
                             userNameError = false
                         },
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -220,48 +240,55 @@ fun UserPaymentScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = {
-                            password = it
-                            passwordError = false
-                        },
-                        singleLine = true,
-                        label = { Text(text = "Password") },
-                        modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Next
-                        ),
-                        trailingIcon = {
-                            if (passwordError) {
-                                Icon(
-                                    imageVector = Icons.Filled.Warning,
-                                    contentDescription = "error",
-                                    tint = Color.Red
-                                )
+                    if (currentUser.value == null) {
+                        OutlinedTextField(
+                            value = password,
+                            onValueChange = {
+                                password = it
+                                passwordError = false
+                            },
+                            keyboardActions = KeyboardActions(onNext = {
+                                focusManager.moveFocus(FocusDirection.Down)
+                            }),
+                            singleLine = true,
+                            label = { Text(text = "Password") },
+                            modifier = Modifier.fillMaxWidth(),
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Next
+                            ),
+                            trailingIcon = {
+                                if (passwordError) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Warning,
+                                        contentDescription = "error",
+                                        tint = Color.Red
+                                    )
 
-                            }
-                        },
-                        isError = passwordError
-                    )
-                    if (passwordError) {
-                        Text(
-                            text = "Please enter your password",
-                            color = Color.Red,
-                            fontSize = 12.sp
+                                }
+                            },
+                            isError = passwordError
                         )
+                        if (passwordError) {
+                            Text(
+                                text = "Please enter your password",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
                     OutlinedTextField(
                         value = postalCode,
                         onValueChange = {
                             postalCode = it
                             postalCodeError = false
                         },
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         singleLine = true,
                         label = { Text(text = "Postal Code") },
                         modifier = Modifier.fillMaxWidth(),
@@ -297,6 +324,9 @@ fun UserPaymentScreen(
                             address = it
                             addressError = false
                         },
+                        keyboardActions = KeyboardActions(onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text
                         ),
@@ -339,7 +369,7 @@ fun UserPaymentScreen(
                                 if (userName.text.isEmpty()) {
                                     userNameError = true
                                 }
-                                if (password.text.isEmpty()) {
+                                if (currentUser.value == null && password.text.isEmpty()) {
                                     passwordError = true
                                 }
                                 if (address.text.isEmpty()) {
@@ -355,6 +385,8 @@ fun UserPaymentScreen(
                                     return@Button
                                 }
                                 var userInfo = UserVM(
+                                    id = if (currentUser.value == null) null else currentUser.value!!.userId,
+                                    customerId = if (currentUser.value == null) null else currentUser.value!!.customerId,
                                     username = userName.text,
                                     password = password.text,
                                     firstName = firstName.text,
@@ -372,25 +404,33 @@ fun UserPaymentScreen(
                                 isLoading = true
                                 transactionViewModel.goToPayment(request) { response ->
                                     if (response.status == "Ok" && response.data!!.isNotEmpty()) {
-
-                                        userViewModel.login(
-                                            UserVM(
-                                                username = userName.text,
-                                                password = password.text
-                                            )
-                                        ) { userResponse ->
-                                            isLoading = false
-                                            if (userResponse.status == "OK") {
-                                                val user = userResponse.data!![0]
-                                                CoroutineScope(Dispatchers.IO).launch {
-                                                    userEntityViewModel.insert(user.convertToEntity())
+                                        if (currentUser.value == null) {
+                                            userViewModel.login(
+                                                UserVM(
+                                                    username = userName.text,
+                                                    password = password.text
+                                                )
+                                            ) { userResponse ->
+                                                isLoading = false
+                                                if (userResponse.status == "OK") {
+                                                    val user = userResponse.data!![0]
+                                                    CoroutineScope(Dispatchers.IO).launch {
+                                                        userEntityViewModel.insert(user.convertToEntity())
+                                                    }
                                                 }
-                                                mainActivity.finish()
-
                                             }
                                         }
+
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            basketEntityViewModel.deleteAll()
+                                            mainActivity.finish()
+                                        }
+
                                         val intentBrowser =
-                                            Intent(Intent.ACTION_VIEW, Uri.parse(response.data[0]))
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(response.data[0])
+                                            )
                                         context.startActivity(intentBrowser)
                                     } else if (response.message!!.isNotEmpty()) {
 
