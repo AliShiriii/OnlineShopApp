@@ -344,17 +344,17 @@ fun EditProfileScreen(
                                     postalCode = postalCode.text
                                 )
                                 isLoading = true
-
                                 userViewModel.update(userInfo) { response ->
                                     if (response.status == "OK") {
                                         CoroutineScope(Dispatchers.IO).launch {
                                             val userEntity = userInfo.convertToEntity()
                                             userEntity.id = currentUser.value!!.id
+                                            userEntity.token = currentUser.value!!.token
                                             userEntityViewModel.update(userEntity)
                                         }
-                                        isLoading = false
                                         navController.popBackStack()
                                     }
+                                    isLoading = false
                                 }
                             },
                             shape = RoundedCornerShape(15.dp),
