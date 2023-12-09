@@ -1,5 +1,6 @@
 package com.example.onlineshopapp.ui.components.products
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -52,7 +53,7 @@ fun ProductFilterView(viewModel: ProductViewModel = hiltViewModel()) {
             ) {
                 Text(
                     text = filters[index],
-                    color = Color.Black,
+                    color = if (isSystemInDarkTheme() && selectedFilter != index) Color.White else Color.Black,
                     fontSize = 15.sp,
                     textAlign = TextAlign.Center
                 )

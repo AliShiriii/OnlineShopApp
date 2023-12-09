@@ -1,5 +1,6 @@
 package com.example.onlineshopapp.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -57,13 +58,7 @@ fun AdvancedButton(
                 Text(
                     text = subTitle,
                     fontSize = 16.sp,
-                    color = Color.DarkGray
-                )
-            }
-
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Outlined.Edit, contentDescription = ""
+                    color = if (isSystemInDarkTheme()) Color.LightGray else Color.DarkGray
                 )
             }
         }

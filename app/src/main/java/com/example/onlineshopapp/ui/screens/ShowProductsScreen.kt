@@ -3,6 +3,7 @@ package com.example.onlineshopapp.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -193,11 +194,8 @@ fun ShowProductsScreen(
                                 if (selectedColors == index) {
                                     Icon(
                                         imageVector = Icons.Filled.Check, contentDescription = "",
-                                        tint = if (data.value?.colors!![index].hexValue?.lowercase(
-                                                Locale.ROOT
-                                            )
-                                            == "fffffff"
-                                        ) Color.Black else Color.White
+                                        tint = if (data.value?.colors!![index].hexValue?.lowercase(Locale.ROOT)
+                                            == "fffffff") Color.Black else Color.White
                                     )
                                 }
                             }
@@ -234,10 +232,10 @@ fun ShowProductsScreen(
                             .fillMaxSize()
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
+                            backgroundColor =  Color.White
                         ),
                     ) {
-                        Text(text = "Buy Now", fontWeight = FontWeight.Bold)
+                        Text(text = "Buy Now", fontWeight = FontWeight.Bold, color = Color.Black)
                     }
 
                     Spacer(modifier = Modifier.width(20.dp))
