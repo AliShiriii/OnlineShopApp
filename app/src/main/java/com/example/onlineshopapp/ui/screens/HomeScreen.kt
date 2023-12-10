@@ -1,5 +1,11 @@
 package com.example.onlineshopapp.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
@@ -24,7 +30,8 @@ fun HomeScreen(
 
     var dataList by remember { mutableStateOf(viewModel.dataList) }
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
-
+    var animatedVisibilityState =
+        remember { MutableTransitionState(false) }.apply { targetState = true }
     /*
     * 1) Slider
     * 2) Product Category
@@ -34,18 +41,52 @@ fun HomeScreen(
 
     LazyColumn(modifier = Modifier.padding(20.dp, 0.dp)) {
         item {
-            SliderListView()
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 1000),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 1000),
+
+                    ),
+                exit = fadeOut()
+            ) {
+                SliderListView()
+            }
             Spacer(modifier = Modifier.padding(20.dp))
         }
         item {
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 1500),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 1500),
 
-            ProductCategoryListView(navController)
+                    ),
+                exit = fadeOut()
+            ) {
+                ProductCategoryListView(navController)
+            }
             Spacer(modifier = Modifier.padding(20.dp))
-
         }
 
         item {
-            ProductFilterView()
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 2000),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 2000),
+
+                    ),
+                exit = fadeOut()
+            ) {
+                ProductFilterView()
+            }
             Spacer(modifier = Modifier.padding(20.dp))
         }
 
@@ -58,10 +99,21 @@ fun HomeScreen(
                 )
             }
         } else
-
             items(dataList.value.size) { index ->
-                ProductListItemView(dataList.value[index], navController)
-                Spacer(modifier = Modifier.padding(10.dp))
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 2500),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 2500),
+
+                        ),
+                    exit = fadeOut()
+                ) {
+                    ProductListItemView(dataList.value[index], navController)
+                    Spacer(modifier = Modifier.padding(10.dp))
+                }
             }
     }
 }

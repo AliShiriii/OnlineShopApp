@@ -1,5 +1,11 @@
 package com.example.onlineshopapp.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,6 +16,8 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +36,26 @@ fun TopAppView(
     showHomeButton: Boolean = false,
 ) {
 
+    var animatedVisibilityState =
+        remember { MutableTransitionState(false) }.apply { targetState = true }
+
     TopAppBar(
-        title = { Text(text = "Online Shoe", fontSize = 2.sp) },
+        title = {
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 500),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 500),
+
+                    ),
+                exit = fadeOut()
+            ) {
+
+            }
+            Text(text = "Online Shoe", fontSize = 2.sp)
+        },
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         actions = {
@@ -60,17 +86,30 @@ fun TopAppView(
                     }
                 }
             }
-            IconButton(onClick = {
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 1000),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 1000),
 
-                if (userEntityViewModel.isLoggedIn()) {
-                    navController.navigate("login")
-                } else {
-                    navController.navigate("dashboard")
-                }
-            }
-
+                    ),
+                exit = fadeOut()
             ) {
-                Icon(imageVector = Icons.Outlined.Person, contentDescription = "")
+
+                IconButton(onClick = {
+
+                    if (userEntityViewModel.isLoggedIn()) {
+                        navController.navigate("login")
+                    } else {
+                        navController.navigate("dashboard")
+                    }
+                }
+
+                ) {
+                    Icon(imageVector = Icons.Outlined.Person, contentDescription = "")
+                }
             }
         })
 }

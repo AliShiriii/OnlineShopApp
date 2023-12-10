@@ -1,6 +1,12 @@
 package com.example.onlineshopapp.ui.screens
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -45,6 +51,9 @@ fun ShowProductsScreen(
     var isLoading by remember { mutableStateOf(true) }
     var selectedSize by remember { mutableStateOf(0) }
     var selectedColors by remember { mutableStateOf(0) }
+    var animatedVisibilityState =
+        remember { MutableTransitionState(false) }.apply { targetState = true }
+
     val context = LocalContext.current
     viewModel.getProductById(productId) { response ->
         isLoading = false
@@ -106,45 +115,103 @@ fun ShowProductsScreen(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.TopStart
             ) {
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 2500),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 2500),
 
-                IconButton(onClick = { navController.popBackStack() }) {
-
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "", tint = Color.White
-                    )
+                        ),
+                    exit = fadeOut()
+                ) {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "", tint = Color.White
+                        )
+                    }
                 }
             }
+        }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Column {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Column {
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 500),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 500),
+
+                        ),
+                    exit = fadeOut()
+                ) {
                     Text(
                         text = data.value?.title!!,
                         color = Color.White,
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.padding(10.dp))
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 800),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 800),
+
+                        ),
+                    exit = fadeOut()
+                ) {
                     Text(
                         text = "${data.value?.price!!}T",
                         color = Color.LightGray,
                         fontSize = 26.sp
                     )
-                    Spacer(modifier = Modifier.padding(10.dp))
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 1300),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 1300),
+
+                        ),
+                    exit = fadeOut()
+                ) {
                     Text(
                         text = "Sizes",
                         color = Color.LightGray,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
+                Spacer(modifier = Modifier.padding(15.dp))
 
-                    Spacer(modifier = Modifier.padding(15.dp))
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 1500),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 1500),
 
+                        ),
+                    exit = fadeOut()
+                ) {
                     LazyRow {
                         items(data.value?.sizes!!.size) { index ->
 
@@ -167,17 +234,39 @@ fun ShowProductsScreen(
                             Spacer(modifier = Modifier.width(5.dp))
                         }
                     }
+                }
+                Spacer(modifier = Modifier.padding(15.dp))
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 2000),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 2000),
 
-                    Spacer(modifier = Modifier.padding(15.dp))
+                        ),
+                    exit = fadeOut()
+                ) {
                     Text(
                         text = "Colors",
                         color = Color.LightGray,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 2200),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 2200),
 
+                        ),
+                    exit = fadeOut()
+                ) {
                     LazyRow {
                         items(data.value?.colors!!.size) { index ->
 
@@ -194,16 +283,32 @@ fun ShowProductsScreen(
                                 if (selectedColors == index) {
                                     Icon(
                                         imageVector = Icons.Filled.Check, contentDescription = "",
-                                        tint = if (data.value?.colors!![index].hexValue?.lowercase(Locale.ROOT)
-                                            == "fffffff") Color.Black else Color.White
+                                        tint = if (data.value?.colors!![index].hexValue?.lowercase(
+                                                Locale.ROOT
+                                            )
+                                            == "fffffff"
+                                        ) Color.Black else Color.White
                                     )
                                 }
                             }
+
                             Spacer(modifier = Modifier.width(5.dp))
                         }
                     }
-                    Spacer(modifier = Modifier.padding(40.dp))
+                }
+                Spacer(modifier = Modifier.padding(40.dp))
 
+                AnimatedVisibility(
+                    visibleState = animatedVisibilityState,
+                    enter = slideInVertically(
+                        animationSpec = tween(500, 2700),
+                        initialOffsetY = { -40 }
+                    ) + fadeIn(
+                        animationSpec = tween(500, 2700),
+
+                        ),
+                    exit = fadeOut()
+                ) {
                     Button(
                         onClick = {
                             CoroutineScope(Dispatchers.IO).launch {
@@ -232,15 +337,14 @@ fun ShowProductsScreen(
                             .fillMaxSize()
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor =  Color.White
+                            backgroundColor = Color.White
                         ),
                     ) {
                         Text(text = "Buy Now", fontWeight = FontWeight.Bold, color = Color.Black)
                     }
-
-                    Spacer(modifier = Modifier.width(20.dp))
-
                 }
+                Spacer(modifier = Modifier.width(20.dp))
+
             }
         }
     }

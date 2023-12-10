@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 fun BasketItemView(
     basketEntity: BasketEntity,
     basketViewModel: BasketEntityViewModel,
-    totalPrice: MutableState<Long>,
     navController: NavController,
 ) {
 
@@ -85,7 +84,6 @@ fun BasketItemView(
                             basketViewModel.decrementQuantity(basketEntity)
                         }
                         quantity--
-                        totalPrice.value -= basketEntity.price
                     },
                     Modifier.size(26.dp)
                 ) {
@@ -103,10 +101,7 @@ fun BasketItemView(
                         CoroutineScope(Dispatchers.IO).launch {
                             basketViewModel.incrementQuantity(basketEntity)
                         }
-
                         quantity++
-                        totalPrice.value += basketEntity.price
-
                     },
                     modifier = Modifier.size(26.dp)
                 ) {

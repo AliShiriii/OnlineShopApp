@@ -1,5 +1,11 @@
 package com.example.onlineshopapp.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
@@ -25,10 +31,24 @@ fun ProductsScreen(
 
     var dataList by remember { mutableStateOf(viewModel.dataList) }
     var isLoading by remember { mutableStateOf(viewModel.isLoading) }
+    var animatedVisibilityState =
+        remember { MutableTransitionState(false) }.apply { targetState = true }
 
     LazyColumn(Modifier.padding(20.dp, 0.dp)) {
         item {
-            Text(text = title, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 500),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 500),
+
+                    ),
+                exit = fadeOut()
+            ) {
+                Text(text = title, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            }
             Spacer(modifier = Modifier.height(20.dp))
         }
         items(dataList.value.size) { index ->
@@ -37,7 +57,19 @@ fun ProductsScreen(
             if ((index + 1) >= (viewModel.pageIndex.value * viewModel.pageSize) && !viewModel.isLoading.value) {
                 viewModel.nextPage()
             }
-            ProductListItemView(dataList.value[index], navController)
+            AnimatedVisibility(
+                visibleState = animatedVisibilityState,
+                enter = slideInVertically(
+                    animationSpec = tween(500, 1000),
+                    initialOffsetY = { -40 }
+                ) + fadeIn(
+                    animationSpec = tween(500, 1000),
+
+                    ),
+                exit = fadeOut()
+            ) {
+                ProductListItemView(dataList.value[index], navController)
+            }
             Spacer(modifier = Modifier.padding(10.dp))
         }
         if (isLoading.value) {
