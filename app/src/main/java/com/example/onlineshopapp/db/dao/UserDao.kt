@@ -16,7 +16,7 @@ interface UserDao {
     @Delete
     fun delete(userEntity: UserEntity)
 
-    @Query("select * from UserEntity limit 1")
+    @Query("select * from userEntity limit 1")
     fun get(): LiveData<UserEntity>
 
     @Query("select * from userEntity")

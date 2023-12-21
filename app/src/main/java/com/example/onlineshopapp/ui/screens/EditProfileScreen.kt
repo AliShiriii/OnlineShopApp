@@ -1,8 +1,5 @@
 package com.example.onlineshopapp.ui.screens
 
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +19,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,10 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.db.viewModels.UserEntityViewModel
 import com.example.onlineshopapp.models.customer.UserVM
-import com.example.onlineshopapp.models.invoices.InvoiceItem
-import com.example.onlineshopapp.models.invoices.PaymentTransaction
 import com.example.onlineshopapp.ui.theme.Dark
-import com.example.onlineshopapp.utils.ThisApp
 import com.example.onlineshopapp.viewModels.customer.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.onlineshopapp.models.products.ProductSize
 
-@Entity
+@Entity(tableName = "basketEntity")
 data class BasketEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     var productId: Long,

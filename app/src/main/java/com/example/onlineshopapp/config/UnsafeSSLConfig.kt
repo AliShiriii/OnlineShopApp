@@ -1,5 +1,6 @@
 package com.example.onlineshopapp.config
 
+import android.annotation.SuppressLint
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -14,7 +15,9 @@ object UnsafeSSLConfig {
         return try {
             // Create a trust manager that does not validate certificate chains
             val trustAllCerts = arrayOf<TrustManager>(
+                @SuppressLint("CustomX509TrustManager")
                 object : X509TrustManager {
+                    @SuppressLint("TrustAllX509TrustManager")
                     @Throws(CertificateException::class)
                     override fun checkClientTrusted(
                         chain: Array<X509Certificate>,
@@ -22,6 +25,7 @@ object UnsafeSSLConfig {
                     ) {
                     }
 
+                    @SuppressLint("TrustAllX509TrustManager")
                     @Throws(CertificateException::class)
                     override fun checkServerTrusted(
                         chain: Array<X509Certificate>,

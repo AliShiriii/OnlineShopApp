@@ -3,7 +3,7 @@ package com.example.onlineshopapp.db.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "userEntity")
 data class UserEntity(
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     var customerId: Long?,

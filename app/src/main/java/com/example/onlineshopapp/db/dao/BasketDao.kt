@@ -16,13 +16,13 @@ interface BasketDao {
     @Delete
     fun delete(basketEntity: BasketEntity)
 
-    @Query("select * from Basketentity")
+    @Query("select * from basketEntity")
     fun getAll(): List<BasketEntity>
 
-    @Query("select * from BasketEntity")
+    @Query("select * from basketEntity")
     fun deleteAll()
 
-    @Query("select * from Basketentity")
+    @Query("select * from basketEntity")
     fun getAllLive(): LiveData<List<BasketEntity>>
 
 }

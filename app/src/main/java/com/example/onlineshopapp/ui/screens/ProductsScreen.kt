@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.onlineshopapp.ui.components.LoadingInColumn
-import com.example.onlineshopapp.ui.components.LoadingInRow
 import com.example.onlineshopapp.ui.components.products.ProductListItemView
 import com.example.onlineshopapp.viewModels.products.ProductByCategoryViewModel
 

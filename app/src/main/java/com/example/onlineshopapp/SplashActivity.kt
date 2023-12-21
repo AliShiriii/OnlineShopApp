@@ -1,5 +1,6 @@
 package com.example.onlineshopapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,7 @@ import com.example.onlineshopapp.ui.ui.theme.OnlineShopAppTheme
 import com.example.onlineshopapp.utils.ThisApp
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 

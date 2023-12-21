@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.onlineshopapp.models.ServiceResponse
 import com.example.onlineshopapp.models.invoices.Invoice
-import com.example.onlineshopapp.models.products.Product
 import com.example.onlineshopapp.repositoris.invoices.InvoiceRepository
 import com.example.onlineshopapp.utils.ThisApp
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -18,7 +18,6 @@ import com.example.onlineshopapp.ui.components.invoices.InvoiceListItemView
 import com.example.onlineshopapp.ui.components.LoadingInColumn
 import com.example.onlineshopapp.viewModels.invoices.InvoiceViewModel
 
-
 @Composable
 fun InvoiceListScreen(navController: NavController, viewModel: InvoiceViewModel = hiltViewModel()) {
 
