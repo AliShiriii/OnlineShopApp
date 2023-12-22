@@ -1,12 +1,14 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            url = uri("https://storage.googleapis.com/r8-releases/raw")
-        }
-        gradlePluginPortal()
+    }
 
+    plugins{
+        id 'com.android.application' version '7.4.2'
+        id 'com.android.library' version '7.4.2'
+        id 'orj.jetbrains.kotlin.android' version '1.5.21'
     }
 }
 dependencyResolutionManagement {
